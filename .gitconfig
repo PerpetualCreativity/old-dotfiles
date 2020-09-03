@@ -1,0 +1,10 @@
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[user]
+	name = PerpetualCreativity
+	email = 47309279+PerpetualCreativity@users.noreply.github.com
+[diff]
+	tool = vimdiff
