@@ -13,23 +13,25 @@ filetype off
 set rtp+=~/.dotfiles/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'frazrepo/vim-rainbow' " code highlighting
-Plugin 'preservim/nerdtree' " <F1> to expand/collapse
-Plugin 'mattn/emmet-vim' " emmet support in vim
-Plugin 'tpope/vim-commentary' "gcc<count> comment out line(s), gc in visual. both are toggleable
-Plugin 'tpope/vim-sensible' " sensible defaults
-Plugin 'chrisbra/csv.vim' " csv editing!
-Plugin 'mhinz/vim-startify' " change the default start screen to one with a talking cow.
-Plugin 'xuyuanp/nerdtree-git-plugin' " file manager
-Plugin 'plasticboy/vim-markdown' " markdown support
-Plugin 'lervag/vimtex' " tex/latex support
-Plugin 'junegunn/goyo.vim' " 'focus mode' for vim
-Plugin 'godlygeek/tabular' " this plugin + vim-markdown can auto-format markdown tables
-Plugin 'wellle/context.vim' " shows what function you're in if it's taller than the page
-Plugin 'wellle/targets.vim' " allows use of ) and , and others as targets in vim
-Plugin 'ntpeters/vim-better-whitespace' " automatically highlights and deletes trailing whitespace
-Plugin 'rrethy/vim-illuminate' " highlight other uses of a variable
-Plugin 'chaoren/vim-wordmotion' " better word motions
+Plugin 'frazrepo/vim-rainbow'            " code highlighting
+Plugin 'preservim/nerdtree'              " <F1> to expand/collapse
+Plugin 'mattn/emmet-vim'                 " emmet support in vim
+Plugin 'tpope/vim-commentary'            " gcc<count> comment out line(s), gc in visual. both are toggleable
+Plugin 'tpope/vim-sensible'              " sensible defaults
+Plugin 'chrisbra/csv.vim'                " csv editing!
+Plugin 'mhinz/vim-startify'              " change the default start screen to one with a talking cow.
+Plugin 'xuyuanp/nerdtree-git-plugin'     " file manager
+Plugin 'plasticboy/vim-markdown'         " markdown support
+Plugin 'lervag/vimtex'                   " tex/latex support
+Plugin 'junegunn/goyo.vim'               " 'focus mode' for vim
+Plugin 'godlygeek/tabular'               " this plugin + vim-markdown can auto-format markdown tables
+Plugin 'wellle/context.vim'              " shows what function you're in if it's taller than the page
+Plugin 'wellle/targets.vim'              " allows use of ) and , and others as targets in vim
+Plugin 'ntpeters/vim-better-whitespace'  " automatically highlights and deletes trailing whitespace
+Plugin 'rrethy/vim-illuminate'           " highlight other uses of a variable
+Plugin 'chaoren/vim-wordmotion'          " better word motions
+Plugin 'nathanaelkane/vim-indent-guides' " indent highlighting
+Plugin 'ervandew/supertab'               " vim autocomplete
 call vundle#end()
 filetype plugin indent on
 
@@ -183,5 +185,5 @@ let g:Illuminate_ftHighlightGroups = { 'vim': ['vimVar', 'vimFuncName', 'vimFunc
 " and vim doesn't do what you really meant for it to do?
 
 command! Q q
-command W w
+command! W w
 
