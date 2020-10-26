@@ -17,7 +17,6 @@ Plugin 'frazrepo/vim-rainbow'            " code highlighting
 Plugin 'preservim/nerdtree'              " <F1> to expand/collapse
 Plugin 'mattn/emmet-vim'                 " emmet support in vim
 Plugin 'tpope/vim-commentary'            " gcc<count> comment out line(s), gc in visual. both are toggleable
-Plugin 'tpope/vim-sensible'              " sensible defaults
 Plugin 'chrisbra/csv.vim'                " csv editing!
 Plugin 'mhinz/vim-startify'              " change the default start screen to one with a talking cow.
 Plugin 'xuyuanp/nerdtree-git-plugin'     " file manager
@@ -30,8 +29,10 @@ Plugin 'wellle/targets.vim'              " allows use of ) and , and others as t
 Plugin 'ntpeters/vim-better-whitespace'  " automatically highlights and deletes trailing whitespace
 Plugin 'rrethy/vim-illuminate'           " highlight other uses of a variable
 Plugin 'chaoren/vim-wordmotion'          " better word motions
-Plugin 'nathanaelkane/vim-indent-guides' " indent highlighting
 Plugin 'ervandew/supertab'               " vim autocomplete
+Plugin 'mg979/vim-visual-multi'          " multiple cursors
+Plugin 'jiangmiao/auto-pairs'            " auto insert/delete brackets
+Plugin 'AndrewRadev/splitjoin.vim'       " switch between single-line and multi-line code
 call vundle#end()
 filetype plugin indent on
 
@@ -124,7 +125,7 @@ nmap <F3> :TableFormat<CR>
 " Vim GitGutter
 set updatetime=100
 map <Leader>gi :GitGutterToggle<CR>
-let g:gitgutter_enabled = 0
+let g:gitgutter_enabled = 1
 
 " Close vim if only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif

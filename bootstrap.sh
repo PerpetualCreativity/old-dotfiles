@@ -1,4 +1,3 @@
-# TODO: detect platform, because karabiner/finicky is only mac
 # homebrew
 /bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
@@ -10,7 +9,9 @@ ln -s ~/.dotfiles/.vim ~/.vim
 
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
 
-pip install powerline-shell
+ln -s ~/dotfiles/.p10k.zsh ~/.p10k.zsh
+
+brew install romkatv/powerlevel10k/powerlevel10k
 
 brew install neofetch
 
@@ -19,6 +20,5 @@ ln -s ~/.dotfiles/powerline.json ~/.config/powerline-shell/config.json
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     ln -s ~/.dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
-    ln -s ~/.dotfiles/.finicky.js ~/.finicky.js
 fi
 
