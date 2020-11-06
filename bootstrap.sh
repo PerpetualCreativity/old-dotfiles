@@ -34,7 +34,8 @@ brew install gh # github cli
 brew install so # stackoverflow/stackexchange cli
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    # add karabiner config
+    # powerful keyboard remapping
+    brew cask install karabiner-elements
     ln -s ~/.dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
     # text expansion
     brew tap federico-terzi/espanso
