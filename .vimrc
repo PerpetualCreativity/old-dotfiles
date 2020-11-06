@@ -16,6 +16,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'frazrepo/vim-rainbow'            " code highlighting
 Plugin 'preservim/nerdtree'              " <F1> to expand/collapse
 Plugin 'mattn/emmet-vim'                 " emmet support in vim
+Plugin 'tpope/vim-fugitive'              " git, but in vim...
+Plugin 'tpope/vim-surround'              " surround things easily
 Plugin 'tpope/vim-commentary'            " gcc<count> comment out line(s), gc in visual. both are toggleable
 Plugin 'chrisbra/csv.vim'                " csv editing!
 Plugin 'mhinz/vim-startify'              " change the default start screen to one with a talking cow.
@@ -33,6 +35,10 @@ Plugin 'ervandew/supertab'               " vim autocomplete
 Plugin 'mg979/vim-visual-multi'          " multiple cursors
 Plugin 'jiangmiao/auto-pairs'            " auto insert/delete brackets
 Plugin 'AndrewRadev/splitjoin.vim'       " switch between single-line and multi-line code
+Plugin 'unblevable/quick-scope'          " Highlight first occurrences of letters (makes using 'f' and friends easier)
+Plugin 'vim-airline/vim-airline'         " a better status bar
+Plugin 'vim-airline/vim-airline-themes'  " the base-16 snazzy theme in this is pretty cool
+Plugin 'arcticicestudio/nord-vim'        " nord theme...
 call vundle#end()
 filetype plugin indent on
 
@@ -89,7 +95,6 @@ set nobackup
 
 "Disable annoying error bells
 set noerrorbells
-set laststatus=0
 set vb t_vb=
 set number
 " space-tabs are better
@@ -134,14 +139,19 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " Treat all .md files as markdown
 autocmd BufNewFile,BufRead *.md set filetype=markdown
 
-" Highlight the line the cursor is on
-autocmd FileType markdown set cursorline
-
 nmap <C-L><C-L> :set invrelativenumber<CR>
+
+" Goyo setup
 nnoremap <C-g> :Goyo<CR>
 nnoremap <tab> <C-W>w
 nnoremap <`> gt
+autocmd FileType * Goyo
+autocmd FileType * Goyo
 autocmd FileType markdown Goyo
+
+" spell check
+map <C-S> :setlocal spell! spelllang=en_gb<CR>
+autocmd FileType markdown setlocal spell spelllang=en_gb
 
 " Vim Markdown
 let g:markdown_fenced_languages = [
@@ -174,12 +184,28 @@ au! BufNewFile,BufRead *.svelte set ft=html
 " vimtex
 let g:tex_flavor = 'latex'
 
-" vim hexokinase
-let g:Hexokinase_highlighters = ['virtual']
+" quick scope
+highlight QuickScopePrimary guifg='#ffffff' gui=underline ctermfg=White cterm=underline
+highlight QuickScopeSecondary guifg='#ffffff' gui=underline ctermfg=White cterm=underline
+
+" vim airline
+let g:airline_theme='base16_snazzy'
 
 " vim illuminate
 let g:Illuminate_delay = 250
 let g:Illuminate_ftHighlightGroups = { 'vim': ['vimVar', 'vimFuncName', 'vimFunction'] }
+
+" support for Terminal.app
+let &t_ZH="\e[3m"
+let &t_ZR="\e[23m"
+
+" nord theme config
+let g:nord_cursor_line_number_background = 1
+let g:nord_italic = 1
+let g:nord_italic_comments = 1
+let g:nord_underline = 1
+
+colorscheme nord
 
 " don't you just hate it when you accidentally type
 " :Q or :W instead of :q and :w

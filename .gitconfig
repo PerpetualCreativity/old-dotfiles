@@ -8,3 +8,8 @@
 	email = 47309279+PerpetualCreativity@users.noreply.github.com
 [diff]
 	tool = vimdiff
+[core]
+    editor = vim
+[color]
+    ui = true
+
