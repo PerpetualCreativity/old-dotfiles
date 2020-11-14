@@ -13,32 +13,56 @@ filetype off
 set rtp+=~/.dotfiles/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'frazrepo/vim-rainbow'            " code highlighting
-Plugin 'preservim/nerdtree'              " <F1> to expand/collapse
-Plugin 'mattn/emmet-vim'                 " emmet support in vim
-Plugin 'tpope/vim-fugitive'              " git, but in vim...
-Plugin 'tpope/vim-surround'              " surround things easily
-Plugin 'tpope/vim-commentary'            " gcc<count> comment out line(s), gc in visual. both are toggleable
-Plugin 'chrisbra/csv.vim'                " csv editing!
-Plugin 'mhinz/vim-startify'              " change the default start screen to one with a talking cow.
-Plugin 'xuyuanp/nerdtree-git-plugin'     " file manager
-Plugin 'plasticboy/vim-markdown'         " markdown support
-Plugin 'lervag/vimtex'                   " tex/latex support
-Plugin 'junegunn/goyo.vim'               " 'focus mode' for vim
-Plugin 'godlygeek/tabular'               " this plugin + vim-markdown can auto-format markdown tables
-Plugin 'wellle/context.vim'              " shows what function you're in if it's taller than the page
-Plugin 'wellle/targets.vim'              " allows use of ) and , and others as targets in vim
-Plugin 'ntpeters/vim-better-whitespace'  " automatically highlights and deletes trailing whitespace
-Plugin 'rrethy/vim-illuminate'           " highlight other uses of a variable
-Plugin 'chaoren/vim-wordmotion'          " better word motions
-Plugin 'ervandew/supertab'               " vim autocomplete
-Plugin 'mg979/vim-visual-multi'          " multiple cursors
-Plugin 'jiangmiao/auto-pairs'            " auto insert/delete brackets
-Plugin 'AndrewRadev/splitjoin.vim'       " switch between single-line and multi-line code
-Plugin 'unblevable/quick-scope'          " Highlight first occurrences of letters (makes using 'f' and friends easier)
-Plugin 'vim-airline/vim-airline'         " a better status bar
-Plugin 'vim-airline/vim-airline-themes'  " the base-16 snazzy theme in this is pretty cool
-Plugin 'arcticicestudio/nord-vim'        " nord theme...
+" file explorer
+Plugin 'preservim/nerdtree'
+" better styling for nerdtree
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+" git status in nerdtree
+Plugin 'xuyuanp/nerdtree-git-plugin'
+" emmet support in vim
+Plugin 'mattn/emmet-vim'
+" git, but in vim
+Plugin 'tpope/vim-fugitive'
+" surround things easily, with (), '', etc
+Plugin 'tpope/vim-surround'
+" gcc<count> comment out line(s), gc in visual. both are toggleable
+Plugin 'tpope/vim-commentary'
+" csv editing!
+Plugin 'chrisbra/csv.vim'
+" change the default start screen
+Plugin 'mhinz/vim-startify'
+" markdown support
+Plugin 'plasticboy/vim-markdown'
+" tex/latex support
+Plugin 'lervag/vimtex'
+" 'focus mode' for vim
+Plugin 'junegunn/goyo.vim'
+" this plugin + vim-markdown can auto-format markdown tables.
+Plugin 'godlygeek/tabular'
+" shows what function you're in if it's taller than the page
+Plugin 'wellle/context.vim'
+" more targets in vim, including ) and ,
+Plugin 'wellle/targets.vim'
+" automatically highlights and deletes trailing whitespace
+Plugin 'ntpeters/vim-better-whitespace'
+" highlight other uses of a variable
+Plugin 'rrethy/vim-illuminate'
+" better word motions
+Plugin 'chaoren/vim-wordmotion'
+" autocomplete
+Plugin 'ervandew/supertab'
+" auto insert/delete brackets
+Plugin 'jiangmiao/auto-pairs'
+" switch between single-line and multi-line code
+Plugin 'AndrewRadev/splitjoin.vim'
+" highlight first occurrences of letters (makes using 'f' and friends easier)
+Plugin 'unblevable/quick-scope'
+" a better status bar
+Plugin 'vim-airline/vim-airline'
+" the base-16 snazzy theme in this is pretty cool
+Plugin 'vim-airline/vim-airline-themes'
+" nord
+Plugin 'arcticicestudio/nord-vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -76,8 +100,6 @@ augroup vimrcEx
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
 augroup END
-
-au BufNewFile,BufRead *.ejs set filetype=html
 
 " Add optional packages.
 "
@@ -135,6 +157,13 @@ let g:gitgutter_enabled = 1
 " Close vim if only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" nerd tree lighlight
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
+let g:NERDTreeHighlightFolders = 1
+let g:NERDTreeHighlightFoldersFullName = 1
+
 " Markdown (.md) config
 " Treat all .md files as markdown
 autocmd BufNewFile,BufRead *.md set filetype=markdown
@@ -179,7 +208,8 @@ let g:vim_markdown_autowrite = 1
 let g:vim_markdown_edit_url_in = 'tab'
 let g:vim_markdown_follow_anchor = 1
 
-au! BufNewFile,BufRead *.svelte set ft=html
+au BufNewFile,BufRead *.bars set filetype=html
+au BufNewFile,BufRead *.ejs set filetype=html
 
 " vimtex
 let g:tex_flavor = 'latex'
@@ -195,7 +225,7 @@ let g:airline_theme='base16_snazzy'
 let g:Illuminate_delay = 250
 let g:Illuminate_ftHighlightGroups = { 'vim': ['vimVar', 'vimFuncName', 'vimFunction'] }
 
-" support for Terminal.app
+" " support for Terminal.app
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 
@@ -213,4 +243,10 @@ colorscheme nord
 
 command! Q q
 command! W w
+
+" only blink cursor in insert mode
+" https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
+let &t_SI.="\e[3 q"
+let &t_SR.="\e[3 q"
+let &t_EI.="\e[4 q"
 

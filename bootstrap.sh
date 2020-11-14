@@ -5,6 +5,8 @@
 
 # homebrew
 /bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew update
+export HOMEBREW_NO_AUTO_UPDATE=1 # prevent homebrew from updating itself each package install
 
 # use zsh as the shell
 chsh -s $(which zsh)
@@ -54,6 +56,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     brew cask install obs # screen capturing/recording
     brew cask install michaelvillar-timer # small timer utility
     brew cask install iglance # menu bar monitor
+    brew cask install grandperspective # a great visual way of analysing disk usage.
     # fonts! specifically, nerd fonts
     brew tap homebrew/cask-fonts
     brew cask install font-fira-code-nerd-font
