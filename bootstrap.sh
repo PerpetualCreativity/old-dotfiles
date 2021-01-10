@@ -25,8 +25,11 @@ git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 # link git config
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
 
+# link alacritty config
+ln -s ~/.dotfiles/.alacritty.yml ~/.alacritty.yml
+
 # link powerlevel10k config
-# if you ever feel like changing this, run `p10k configure` and a config wizard will pop up
+# if you want to change the appearance, run `p10k configure` and a config wizard will pop up
 brew install romkatv/powerlevel10k/powerlevel10k
 ln -s ~/dotfiles/.p10k.zsh ~/.p10k.zsh
 
