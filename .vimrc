@@ -31,12 +31,8 @@ Plugin 'tpope/vim-commentary'
 Plugin 'chrisbra/csv.vim'
 " change the default start screen
 Plugin 'mhinz/vim-startify'
-" markdown support
-Plugin 'plasticboy/vim-markdown'
 " tex/latex support
 Plugin 'lervag/vimtex'
-" 'focus mode' for vim
-Plugin 'junegunn/goyo.vim'
 " this plugin + vim-markdown can auto-format markdown tables.
 Plugin 'godlygeek/tabular'
 " shows what function you're in if it's taller than the page
@@ -49,35 +45,36 @@ Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'rrethy/vim-illuminate'
 " better word motions
 Plugin 'chaoren/vim-wordmotion'
-" autocomplete
-Plugin 'ervandew/supertab'
+" you complete me code completion
+Plugin 'ycm-core/YouCompleteMe'
 " auto insert/delete brackets
 Plugin 'jiangmiao/auto-pairs'
 " switch between single-line and multi-line code
 Plugin 'AndrewRadev/splitjoin.vim'
 " highlight first occurrences of letters (makes using 'f' and friends easier)
 Plugin 'unblevable/quick-scope'
+" support for practically all languages
+Plugin 'sheerun/vim-polyglot'
 " a better status bar
 Plugin 'vim-airline/vim-airline'
-" the base-16 snazzy theme in this is pretty cool
 Plugin 'vim-airline/vim-airline-themes'
 " nord
 Plugin 'arcticicestudio/nord-vim'
+" limelight
+Plugin 'junegunn/limelight.vim'
+" css colors
+Plugin 'ap/vim-css-color'
+" pandoc markdown support
+Plugin 'vim-pandoc/vim-pandoc-syntax'
+" snippets for vim
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 call vundle#end()
 filetype plugin indent on
 
 " Better Whitespace Setup
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
-
-" Rainbow Setup
-let g:rainbow_active = 1
-let g:rainbow_guifgs = ['LightGray', 'Blue', 'Green', 'Red', 'Cyan', 'Magenta', 'Yellow']
-let g:rainbow_ctermfgs = ['LightGray', 'Blue', 'Green', 'Red', 'Cyan', 'Magenta', 'Yellow']
-
-
-" Get the defaults that most users want.
-source $VIMRUNTIME/defaults.vim
 
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
@@ -144,11 +141,14 @@ set foldnestmax=10
 " no, I don't use it that often. However, it is useful when resizing splits.
 set mouse=a
 set wildmenu
+set relativenumber
+set clipboard=unnamed
 
 let NERDTreeQuitOnOpen=1
 
 nmap <F2> :NERDTreeToggle<CR>
 nmap <F3> :TableFormat<CR>
+nmap <F4> gg=G''zz
 " Vim GitGutter
 set updatetime=100
 map <Leader>gi :GitGutterToggle<CR>
@@ -157,59 +157,35 @@ let g:gitgutter_enabled = 1
 " Close vim if only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" nerd tree lighlight
+" nerd tree highlight
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
 let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeHighlightFolders = 1
 let g:NERDTreeHighlightFoldersFullName = 1
 
+
 " Markdown (.md) config
 " Treat all .md files as markdown
-autocmd BufNewFile,BufRead *.md set filetype=markdown
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+" tell vim to load pandoc markdown
+autocmd BufNewFile,BufFilePre,BufRead *.md set syntax=markdown.pandoc
+
+autocmd syntax markdown.pandoc let b:AutoPairs = AutoPairsDefine({'$':'$', '$$': '$$', '\left(': '\right)', '*': '*', '**': '**'})
+let g:pandoc#syntax#conceal#urls=1
+autocmd syntax markdown.pandoc set conceallevel=2
+autocmd syntax markdown.pandoc highlight! link Conceal Special
+autocmd syntax markdown.pandoc Limelight
 
 nmap <C-L><C-L> :set invrelativenumber<CR>
 
-" Goyo setup
-nnoremap <C-g> :Goyo<CR>
 nnoremap <tab> <C-W>w
-nnoremap <`> gt
-autocmd FileType * Goyo
-autocmd FileType * Goyo
-autocmd FileType markdown Goyo
 
 " spell check
-map <C-S> :setlocal spell! spelllang=en_gb<CR>
 autocmd FileType markdown setlocal spell spelllang=en_gb
-
-" Vim Markdown
-let g:markdown_fenced_languages = [
-    \ 'bash=sh',
-    \ 'c',
-    \ 'coffee',
-    \ 'erb=eruby',
-    \ 'javascript',
-    \ 'json',
-    \ 'perl',
-    \ 'python',
-    \ 'ruby',
-    \ 'yaml',
-    \ 'go',
-\]
-
-" Configuration for vim-markdown
-let g:vim_markdown_conceal = 2
-let g:vim_markdown_conceal_code_blocks = 0
-let g:vim_markdown_math = 1
-let g:vim_markdown_toml_frontmatter = 1
-let g:vim_markdown_frontmatter = 1
-let g:vim_markdown_strikethrough = 1
-let g:vim_markdown_autowrite = 1
-let g:vim_markdown_edit_url_in = 'tab'
-let g:vim_markdown_follow_anchor = 1
-
-au BufNewFile,BufRead *.bars set filetype=html
-au BufNewFile,BufRead *.ejs set filetype=html
+" turn off spell checking between $$ in markdown (latex)
+" https://vi.stackexchange.com/a/19991
+autocmd FileType markdown syntax match notexspell /\$[^\$]\+\$/ contains=@NoSpell
 
 " vimtex
 let g:tex_flavor = 'latex'
@@ -217,6 +193,7 @@ let g:tex_flavor = 'latex'
 " quick scope
 highlight QuickScopePrimary guifg='#ffffff' gui=underline ctermfg=White cterm=underline
 highlight QuickScopeSecondary guifg='#ffffff' gui=underline ctermfg=White cterm=underline
+autocmd FileType markdown let b:qs_local_disable=1
 
 " vim airline
 let g:airline_theme='base16_snazzy'
@@ -225,7 +202,7 @@ let g:airline_theme='base16_snazzy'
 let g:Illuminate_delay = 250
 let g:Illuminate_ftHighlightGroups = { 'vim': ['vimVar', 'vimFuncName', 'vimFunction'] }
 
-" " support for Terminal.app
+" italics support for Terminal.app
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 
@@ -237,6 +214,9 @@ let g:nord_underline = 1
 
 colorscheme nord
 
+" limelight
+let g:limelight_conceal_ctermfg = 'gray'
+
 " don't you just hate it when you accidentally type
 " :Q or :W instead of :q and :w
 " and vim doesn't do what you really meant for it to do?
@@ -246,7 +226,35 @@ command! W w
 
 " only blink cursor in insert mode
 " https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
-let &t_SI.="\e[3 q"
-let &t_SR.="\e[3 q"
+let &t_SI.="\e[6 q"
+let &t_SR.="\e[2 q"
 let &t_EI.="\e[4 q"
+
+" vim as a calculator
+" second comment on
+" https://vim.fandom.com/wiki/Using_vim_as_calculator
+ino <C-A> <C-O>yiW<End>=<C-R>=<C-R>0<CR>
+
+" this is the only useful function from $VIMRUNTIME/defaults.vim that isn't
+" already in this .vimrc.
+" it sends the editor back to the line you were last editing.
+autocmd BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+  \ |   exe "normal! g`\""
+  \ | endif
+
+" ycm configuration
+
+autocmd filetype markdown let g:loaded_youcompleteme=1
+
+" ultisnips configuration
+
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+" correcting spelling mistakes on the fly
+inoremap <C-k> <c-g>u<Esc>[s1z=`]a<c-g>u
+
+set rtp+=~/.dotfiles/vimlink/
 

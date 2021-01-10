@@ -1,0 +1,44 @@
+
+window:
+  decorations: buttonless
+  startup_mode: Windowed
+
+font:
+  normal:
+    family: VictorMono Nerd Font
+    style: Regular
+  size: 24.0
+  use_thin_strokes: true
+
+background_opacity: 0.8
+
+cursor:
+  style:
+    shape: Underline
+
+live_config_reload: true
+
+# Colors (from Base16 Default Dark, slightly adapted)
+colors:
+  primary:
+    background: '0x222222'
+    foreground: '0xd8d8d8'
+
+  normal:
+    black:   '0x222222'
+    red:     '0xab4642'
+    green:   '0xa1b56c'
+    yellow:  '0xf7ca88'
+    blue:    '0x7cafc2'
+    magenta: '0xba8baf'
+    cyan:    '0x86c1b9'
+    white:   '0xd8d8d8'
+
+mouse_bindings:
+  - { mouse: Middle, action: ToggleFullscreen }
+  - { mouse: Right, action: SpawnNewInstance }
+
+key_bindings:
+  - { key: Paste, action: Paste }
+  - { key: Return, mods: Command, action: ToggleFullscreen }
+

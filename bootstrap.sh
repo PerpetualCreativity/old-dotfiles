@@ -2,6 +2,10 @@
 #
 # Things I haven't added yet:
 # menu-bar-splitter - https://github.com/jwhamilton99/menu-bar-splitter
+# useful? vim +PluginInstall +qall
+# also, need to add the fix to the vim linking problem
+# as specified here:
+# https://apple.stackexchange.com/a/362840
 
 # homebrew
 /bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -15,6 +19,8 @@ ln -s ~/.dotfiles/.zshrc ~/.zshrc
 # link vim files
 ln -s ~/.dotfiles/.vimrc ~/.vimrc
 ln -s ~/.dotfiles/.vim ~/.vim
+# install the vundle plugin manager
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
 # link git config
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
@@ -41,16 +47,20 @@ brew install zsh-autosuggestions # autosuggestions for zsh
 brew install zsh-syntax-highlighting # syntax highlighting for zsh
 brew install zoxide # faster + fuzzier `cd`
 
+brew install cmake python nodejs # install my most-used langauges :)
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install vim # install vim, with options.
     # powerful keyboard remapping
     brew cask install karabiner-elements
     ln -s ~/.dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
     # text expansion
     brew tap federico-terzi/espanso
     brew install espanso
+    brew install alacritty # the best terminal emulator...
     brew cask install docker # containerisation...
     brew cask install figma # ui/ux prototyping and design
-    brew cask install lunar # control external monitor brightness
+    brew cask install monitorcontrol # control external monitor brightness
     brew cask install hiddenbar # hide menu items
     brew cask install wireshark # network protocol analyser
     brew cask install obs # screen capturing/recording
