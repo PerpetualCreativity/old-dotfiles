@@ -33,10 +33,9 @@ Plugin 'chrisbra/csv.vim'
 Plugin 'mhinz/vim-startify'
 " tex/latex support
 Plugin 'lervag/vimtex'
-" this plugin + vim-markdown can auto-format markdown tables.
+" to auto-format markdown tables.
 Plugin 'godlygeek/tabular'
-" shows what function you're in if it's taller than the page
-Plugin 'wellle/context.vim'
+Plugin 'plasticboy/vim-markdown'
 " more targets in vim, including ) and ,
 Plugin 'wellle/targets.vim'
 " automatically highlights and deletes trailing whitespace
@@ -45,30 +44,21 @@ Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'rrethy/vim-illuminate'
 " better word motions
 Plugin 'chaoren/vim-wordmotion'
-" you complete me code completion
-Plugin 'ycm-core/YouCompleteMe'
 " auto insert/delete brackets
 Plugin 'jiangmiao/auto-pairs'
 " switch between single-line and multi-line code
 Plugin 'AndrewRadev/splitjoin.vim'
-" highlight first occurrences of letters (makes using 'f' and friends easier)
-Plugin 'unblevable/quick-scope'
-" support for practically all languages
-Plugin 'sheerun/vim-polyglot'
 " a better status bar
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-" nord
-Plugin 'arcticicestudio/nord-vim'
 " limelight
 Plugin 'junegunn/limelight.vim'
 " css colors
 Plugin 'ap/vim-css-color'
 " pandoc markdown support
 Plugin 'vim-pandoc/vim-pandoc-syntax'
-" snippets for vim
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+" nord
+Plugin 'arcticicestudio/nord-vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -85,19 +75,6 @@ else
   endif
 endif
 
-if &t_Co > 2 || has("gui_running")
-  " Switch on highlighting the last used search pattern.
-  set hlsearch
-endif
-
-" Put these in an autocmd group, so that we can delete them easily.
-augroup vimrcEx
-  au!
-
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
-augroup END
-
 " Add optional packages.
 "
 " The matchit plugin makes the % command work better, but it is not backwards
@@ -112,7 +89,7 @@ syntax enable
 
 set nobackup
 
-"Disable annoying error bells
+" Disable annoying error bells
 set noerrorbells
 set vb t_vb=
 set number
@@ -147,12 +124,6 @@ set clipboard=unnamed
 let NERDTreeQuitOnOpen=1
 
 nmap <F2> :NERDTreeToggle<CR>
-nmap <F3> :TableFormat<CR>
-nmap <F4> gg=G''zz
-" Vim GitGutter
-set updatetime=100
-map <Leader>gi :GitGutterToggle<CR>
-let g:gitgutter_enabled = 1
 
 " Close vim if only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -175,7 +146,6 @@ autocmd syntax markdown.pandoc let b:AutoPairs = AutoPairsDefine({'$':'$', '$$':
 let g:pandoc#syntax#conceal#urls=1
 autocmd syntax markdown.pandoc set conceallevel=2
 autocmd syntax markdown.pandoc highlight! link Conceal Special
-autocmd syntax markdown.pandoc Limelight
 
 nmap <C-L><C-L> :set invrelativenumber<CR>
 
@@ -202,18 +172,6 @@ let g:airline_theme='base16_snazzy'
 let g:Illuminate_delay = 250
 let g:Illuminate_ftHighlightGroups = { 'vim': ['vimVar', 'vimFuncName', 'vimFunction'] }
 
-" italics support for Terminal.app
-let &t_ZH="\e[3m"
-let &t_ZR="\e[23m"
-
-" nord theme config
-let g:nord_cursor_line_number_background = 1
-let g:nord_italic = 1
-let g:nord_italic_comments = 1
-let g:nord_underline = 1
-
-colorscheme nord
-
 " limelight
 let g:limelight_conceal_ctermfg = 'gray'
 
@@ -224,11 +182,11 @@ let g:limelight_conceal_ctermfg = 'gray'
 command! Q q
 command! W w
 
-" only blink cursor in insert mode
+" change cursor style in different modes
 " https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
-let &t_SI.="\e[6 q"
-let &t_SR.="\e[2 q"
-let &t_EI.="\e[4 q"
+let &t_SI.="\e[6 q" " line          insert
+let &t_SR.="\e[2 q" " block         replace
+let &t_EI.="\e[4 q" " underscore    normal
 
 " vim as a calculator
 " second comment on
@@ -243,18 +201,16 @@ autocmd BufReadPost *
   \ |   exe "normal! g`\""
   \ | endif
 
-" ycm configuration
-
-autocmd filetype markdown let g:loaded_youcompleteme=1
-
-" ultisnips configuration
-
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+" italics support
+let &t_ZH="\e[3m"
+let &t_ZR="\e[23m"
 
 " correcting spelling mistakes on the fly
 inoremap <C-k> <c-g>u<Esc>[s1z=`]a<c-g>u
 
-set rtp+=~/.dotfiles/vimlink/
+" let g:nord_cursor_line_number_background = 1
+" let g:nord_italic = 1
+" let g:nord_italic_comments = 1
+" let g:nord_underline = 1
+colorscheme cyan
 

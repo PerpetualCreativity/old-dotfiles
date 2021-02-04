@@ -26,15 +26,8 @@ alias quit=exit
 alias py=python3
 alias todo=todo.sh
 alias cd=z
-
-# go stuff
-export GOPATH=$HOME/Go
-export GOROOT=/usr/local/opt/go/libexec
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
+alias ds=dstask
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-alias wer='pdflatex extended-essay.tex && bibtex extended-essay && pdflatex extended-essay.tex && pdflatex extended-essay.tex && pdflatex extended-essay.tex -o extended-essay.pdf && open extended-essay.pdf && texcount extended-essay'
 
