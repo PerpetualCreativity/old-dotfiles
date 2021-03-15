@@ -21,7 +21,7 @@ live_config_reload: true
 # Colors (from Base16 Default Dark, slightly adapted)
 colors:
   primary:
-    background: '0x333333'
+    background: '0x111111'
     foreground: '0xcccccc'
 
   normal:

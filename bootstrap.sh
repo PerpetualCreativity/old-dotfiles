@@ -8,7 +8,7 @@
 # https://apple.stackexchange.com/a/362840
 
 # homebrew
-/bin/bash -c "\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew update
 export HOMEBREW_NO_AUTO_UPDATE=1 # prevent homebrew from updating itself each package install
 
@@ -37,6 +37,7 @@ ln -s ~/dotfiles/.p10k.zsh ~/.p10k.zsh
 brew install neofetch
 ln -s ~/.dotfiles/neofetch.conf ~/.config/neofetch/config.conf
 
+brew install pandoc # powerful file converter
 brew install ffmpeg # multimedia processing
 brew install zoxide # a smarter cd
 brew install todo-txt; cp /usr/local/opt/todo-txt/todo.cfg ~/.todo.cfg  # simple+effective todo list utility
@@ -49,33 +50,38 @@ brew install tldr # simple man pages
 brew install zsh-autosuggestions # autosuggestions for zsh
 brew install zsh-syntax-highlighting # syntax highlighting for zsh
 brew install zoxide # faster + fuzzier `cd`
+brew install fzf fd # fuzzy finder and better find
 
-brew install cmake python nodejs # install my most-used langauges :)
+# install my most used languages
+brew install cmake python nodejs go haskell-stack
+sudo npm install -g typescript
+
+# install language servers (for vim)
+brew install gopls
+brew install rust-analyzer
+sudo npm install -g typescript-language-server
+sudo pip3 install 'python-language-server[all]'
+ghcup install hls
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     brew install vim # install vim, with options.
     # powerful keyboard remapping
-    brew cask install karabiner-elements
+    brew install --cask karabiner-elements
     ln -s ~/.dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
     # text expansion
     brew tap federico-terzi/espanso
     brew install espanso
     brew install alacritty # the best terminal emulator...
-    brew cask install docker # containerisation...
-    brew cask install figma # ui/ux prototyping and design
-    brew cask install monitorcontrol # control external monitor brightness
-    brew cask install hiddenbar # hide menu items
-    brew cask install wireshark # network protocol analyser
-    brew cask install obs # screen capturing/recording
-    brew cask install michaelvillar-timer # small timer utility
-    brew cask install iglance # menu bar monitor
-    brew cask install grandperspective # a great visual way of analysing disk usage.
+    brew install --cask figma # ui/ux prototyping and design
+    brew install --cask monitorcontrol # control external monitor brightness
+    brew install --cask hiddenbar # hide menu items
+    brew install --cask grandperspective # a great visual way of analysing disk usage.
     # fonts! specifically, nerd fonts
     brew tap homebrew/cask-fonts
-    brew cask install font-fira-code-nerd-font
-    brew cask install font-iosevka-nerd-font
-    brew cask install font-source-code-pro-nerd-font
-    brew cask install font-victor-mono-nerd-font
+    brew install --cask font-fira-code-nerd-font
+    brew install --cask font-iosevka-nerd-font
+    brew install --cask font-source-code-pro-nerd-font
+    brew install --cask font-victor-mono-nerd-font
 fi
 
 source ~/.zshrc # force reload zsh

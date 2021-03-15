@@ -19,6 +19,8 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh # zsh 
 
 eval "$(zoxide init zsh)" # zoxide
 
+export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
+
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 bindkey -v
 
@@ -27,6 +29,9 @@ alias py=python3
 alias todo=todo.sh
 alias cd=z
 alias ds=dstask
+
+# go
+export PATH=$PATH:$HOME/go/bin
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

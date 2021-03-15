@@ -19,6 +19,9 @@ Plugin 'preservim/nerdtree'
 Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
 " git status in nerdtree
 Plugin 'xuyuanp/nerdtree-git-plugin'
+" open files with fzf (requires fzf installed)
+set rtp+=/usr/local/opt/fzf
+Plugin 'junegunn/fzf.vim'
 " emmet support in vim
 Plugin 'mattn/emmet-vim'
 " git, but in vim
@@ -29,21 +32,14 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
 " csv editing!
 Plugin 'chrisbra/csv.vim'
-" change the default start screen
-Plugin 'mhinz/vim-startify'
 " tex/latex support
 Plugin 'lervag/vimtex'
 " to auto-format markdown tables.
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+Plugin 'dhruvasagar/vim-table-mode'
 " more targets in vim, including ) and ,
 Plugin 'wellle/targets.vim'
 " automatically highlights and deletes trailing whitespace
 Plugin 'ntpeters/vim-better-whitespace'
-" highlight other uses of a variable
-Plugin 'rrethy/vim-illuminate'
-" better word motions
-Plugin 'chaoren/vim-wordmotion'
 " auto insert/delete brackets
 Plugin 'jiangmiao/auto-pairs'
 " switch between single-line and multi-line code
@@ -57,8 +53,20 @@ Plugin 'junegunn/limelight.vim'
 Plugin 'ap/vim-css-color'
 " pandoc markdown support
 Plugin 'vim-pandoc/vim-pandoc-syntax'
-" nord
-Plugin 'arcticicestudio/nord-vim'
+" Language Server Protocol support
+Plugin 'natebosch/vim-lsc'
+" use tab for omnicomplete
+Plugin 'ajh17/VimCompletesMe'
+" support for many different languages
+Plugin 'sheerun/vim-polyglot'
+" visualise the Vim undo tree
+Plugin 'mbbill/undotree'
+" text alignment
+Plugin 'tommcdo/vim-lion'
+" quickly see which command to use
+Plugin 'lifepillar/vim-cheat40'
+" repeat plugin commands with .
+Plugin 'repeat.vim'
 call vundle#end()
 filetype plugin indent on
 
@@ -67,11 +75,12 @@ let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
 
 if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
+  set nobackup      " do not keep a backup file, use versions instead
 else
-  set backup		" keep a backup file (restore to previous version)
+  set backup        " keep a backup file (restore to previous version)
   if has('persistent_undo')
-    set undofile	" keep an undo file (undo changes after closing)
+    set undodir=$HOME."/.undodir"
+    set undofile    " keep an undo file (undo changes after closing)
   endif
 endif
 
@@ -108,9 +117,6 @@ set hlsearch
 " when searching, lowercase=ignorecase and any uppercase becomes case-sensitive
 set ignorecase
 set smartcase
-set undofile
-" don't place undo files in the same folder as the file
-set undodir=~/.vim/undodir
 set foldenable
 set foldlevelstart=10
 set foldnestmax=10
@@ -120,7 +126,10 @@ set mouse=a
 set wildmenu
 set relativenumber
 set clipboard=unnamed
+" disable vim intro
+set shm+=I
 
+" NERDTree config
 let NERDTreeQuitOnOpen=1
 
 nmap <F2> :NERDTreeToggle<CR>
@@ -135,6 +144,8 @@ let g:NERDTreePatternMatchHighlightFullName = 1
 let g:NERDTreeHighlightFolders = 1
 let g:NERDTreeHighlightFoldersFullName = 1
 
+" fzf.vim config
+nnoremap <silent> <Space><Space> :Files<CR>
 
 " Markdown (.md) config
 " Treat all .md files as markdown
@@ -151,6 +162,9 @@ nmap <C-L><C-L> :set invrelativenumber<CR>
 
 nnoremap <tab> <C-W>w
 
+" undotree config
+nnoremap <F3> :UndotreeToggle<CR>
+
 " spell check
 autocmd FileType markdown setlocal spell spelllang=en_gb
 " turn off spell checking between $$ in markdown (latex)
@@ -160,10 +174,34 @@ autocmd FileType markdown syntax match notexspell /\$[^\$]\+\$/ contains=@NoSpel
 " vimtex
 let g:tex_flavor = 'latex'
 
-" quick scope
-highlight QuickScopePrimary guifg='#ffffff' gui=underline ctermfg=White cterm=underline
-highlight QuickScopeSecondary guifg='#ffffff' gui=underline ctermfg=White cterm=underline
-autocmd FileType markdown let b:qs_local_disable=1
+" LSC config
+
+let g:lsc_server_commands = {
+\  "go": {
+\    "command": "gopls serve",
+\    "log_level": -1,
+\    "suppress_stderr": v:true,
+\  },
+\  "rust": "rust-analyzer",
+\  "javascript": "typescript-language-server --stdio",
+\  "haskell": "haskell-language-server-wrapper --lsp"
+\}
+
+let g:lsc_auto_map = {
+\  'GoToDefinition': 'gd',
+\  'FindReferences': 'gr',
+\  'Rename': 'gR',
+\  'ShowHover': 'K',
+\  'FindCodeActions': 'ga',
+\  'Completion': 'omnifunc',
+\}
+
+let g:lsc_enable_autocomplete = v:true
+let g:lsc_enable_diagnostics = v:true
+let g:lsc_reference_highlights = v:false
+let g:lsc_trace_level = 'off'
+
+set completeopt=menu,menuone,noinsert,noselect
 
 " vim airline
 let g:airline_theme='base16_snazzy'
@@ -178,7 +216,6 @@ let g:limelight_conceal_ctermfg = 'gray'
 " don't you just hate it when you accidentally type
 " :Q or :W instead of :q and :w
 " and vim doesn't do what you really meant for it to do?
-
 command! Q q
 command! W w
 
