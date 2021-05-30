@@ -39,7 +39,7 @@ getgit () {
         branchname=$(git branch --show-current)
         psvar[1]="$psvar[1]%F{blue}$branchname%f "
 
-        commits=$(git log origin/master..master | wc -l | sed 's/^ *//')
+        commits=$(git cherry -v | wc -l | sed 's/^ *//')
         if [ $commits != "0" ]; then psvar[1]="$psvar[1]%F{blue}↑$commits%f "; fi
 
         added=$(git diff --cached --name-only | wc -l | sed 's/^ *//')
