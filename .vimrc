@@ -12,6 +12,7 @@ filetype off
 
 set rtp+=~/.dotfiles/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'adrian5/oceanic-next-vim'
 Plugin 'VundleVim/Vundle.vim'
 " file explorer
 Plugin 'preservim/nerdtree'
@@ -45,16 +46,15 @@ Plugin 'jiangmiao/auto-pairs'
 " switch between single-line and multi-line code
 Plugin 'AndrewRadev/splitjoin.vim'
 " a better status bar
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-" limelight
-Plugin 'junegunn/limelight.vim'
-" css colors
+Plugin 'itchyny/lightline.vim'
+" preview css colors
 Plugin 'ap/vim-css-color'
 " pandoc markdown support
 Plugin 'vim-pandoc/vim-pandoc-syntax'
 " Language Server Protocol support
 Plugin 'natebosch/vim-lsc'
+" Debug Adapter Protocol support
+Plugin 'puremourning/vimspector'
 " use tab for omnicomplete
 Plugin 'ajh17/VimCompletesMe'
 " support for many different languages
@@ -67,6 +67,12 @@ Plugin 'tommcdo/vim-lion'
 Plugin 'lifepillar/vim-cheat40'
 " repeat plugin commands with .
 Plugin 'repeat.vim'
+" browse filetags
+Plugin 'preservim/tagbar'
+" dc-based calculator for vim
+Plugin 'fcpg/vim-colddeck'
+" add Nerd Font support to vim
+Plugin 'ryanoasis/vim-devicons'
 call vundle#end()
 filetype plugin indent on
 
@@ -128,6 +134,9 @@ set relativenumber
 set clipboard=unnamed
 " disable vim intro
 set shm+=I
+set foldmethod=syntax
+set laststatus=2
+set showcmd
 
 " NERDTree config
 let NERDTreeQuitOnOpen=1
@@ -162,8 +171,20 @@ nmap <C-L><C-L> :set invrelativenumber<CR>
 
 nnoremap <tab> <C-W>w
 
+" detect racket files
+autocmd BufNewFile,BufFilePre,BufRead *.rkt set filetype=racket
+
 " undotree config
 nnoremap <F3> :UndotreeToggle<CR>
+
+" tagbar config
+nnoremap <F4> :TagbarToggle<CR>
+
+" lightline config
+" ayu_dark,
+let g:lightline = {
+    \ 'colorscheme': 'ayu_dark',
+    \ }
 
 " spell check
 autocmd FileType markdown setlocal spell spelllang=en_gb
@@ -184,7 +205,8 @@ let g:lsc_server_commands = {
 \  },
 \  "rust": "rust-analyzer",
 \  "javascript": "typescript-language-server --stdio",
-\  "haskell": "haskell-language-server-wrapper --lsp"
+\  "haskell": "haskell-language-server-wrapper --lsp",
+\  "racket": "racket -l racket-langserver"
 \}
 
 let g:lsc_auto_map = {
@@ -203,15 +225,8 @@ let g:lsc_trace_level = 'off'
 
 set completeopt=menu,menuone,noinsert,noselect
 
-" vim airline
-let g:airline_theme='base16_snazzy'
-
-" vim illuminate
-let g:Illuminate_delay = 250
-let g:Illuminate_ftHighlightGroups = { 'vim': ['vimVar', 'vimFuncName', 'vimFunction'] }
-
-" limelight
-let g:limelight_conceal_ctermfg = 'gray'
+" vimspector
+let g:vimspector_enable_mappings = 'HUMAN'
 
 " don't you just hate it when you accidentally type
 " :Q or :W instead of :q and :w
@@ -224,11 +239,6 @@ command! W w
 let &t_SI.="\e[6 q" " line          insert
 let &t_SR.="\e[2 q" " block         replace
 let &t_EI.="\e[4 q" " underscore    normal
-
-" vim as a calculator
-" second comment on
-" https://vim.fandom.com/wiki/Using_vim_as_calculator
-ino <C-A> <C-O>yiW<End>=<C-R>=<C-R>0<CR>
 
 " this is the only useful function from $VIMRUNTIME/defaults.vim that isn't
 " already in this .vimrc.
@@ -245,9 +255,5 @@ let &t_ZR="\e[23m"
 " correcting spelling mistakes on the fly
 inoremap <C-k> <c-g>u<Esc>[s1z=`]a<c-g>u
 
-" let g:nord_cursor_line_number_background = 1
-" let g:nord_italic = 1
-" let g:nord_italic_comments = 1
-" let g:nord_underline = 1
-colorscheme cyan
+colorscheme oceanicnext
 

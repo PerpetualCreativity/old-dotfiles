@@ -1,11 +1,4 @@
 # Simply comment the lines for things you don't want to install/run
-#
-# Things I haven't added yet:
-# menu-bar-splitter - https://github.com/jwhamilton99/menu-bar-splitter
-# useful? vim +PluginInstall +qall
-# also, need to add the fix to the vim linking problem
-# as specified here:
-# https://apple.stackexchange.com/a/362840
 
 # homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -18,20 +11,19 @@ ln -s ~/.dotfiles/.zshrc ~/.zshrc
 
 # link vim files
 ln -s ~/.dotfiles/.vimrc ~/.vimrc
-ln -s ~/.dotfiles/.vim ~/.vim
 # install the vundle plugin manager
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+# neovim
+brew install neovim --HEAD
+# link init.vim
+ln -s ~/.dotfiles/init.vim ~/.config/nvim/
 
 # link git config
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
 
 # link alacritty config
 ln -s ~/.dotfiles/.alacritty.yml ~/.alacritty.yml
-
-# link powerlevel10k config
-# if you want to change the appearance, run `p10k configure` and a config wizard will pop up
-brew install romkatv/powerlevel10k/powerlevel10k
-ln -s ~/dotfiles/.p10k.zsh ~/.p10k.zsh
 
 # for sharing computer setup
 brew install neofetch
@@ -78,9 +70,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     brew install --cask grandperspective # a great visual way of analysing disk usage.
     # fonts! specifically, nerd fonts
     brew tap homebrew/cask-fonts
-    brew install --cask font-fira-code-nerd-font
     brew install --cask font-iosevka-nerd-font
-    brew install --cask font-source-code-pro-nerd-font
     brew install --cask font-victor-mono-nerd-font
 fi
 

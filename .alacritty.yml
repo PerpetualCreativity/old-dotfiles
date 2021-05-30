@@ -1,48 +1,91 @@
 
 window:
-  decorations: buttonless
-  startup_mode: Windowed
+  decorations: none
+  startup_mode: Maximized
+
+dynamic_title: true
+
+class:
+  instance: Alacritty
+  general: Alacritty
 
 font:
   normal:
     family: VictorMono Nerd Font
     style: ExtraLight
-  size: 24.0
-  use_thin_strokes: true
-
-background_opacity: 0.8
+  bold:
+    style: Regular
+  italic:
+    style: ExtraLight Italic
+  bold_italic:
+    style: Italic
+  size: 21.25
+  use_thin_strokes: false
 
 cursor:
   style:
     shape: Underline
 
+mouse:
+  hide_when_typing: true
+
 live_config_reload: true
 
-# Colors (from Base16 Default Dark, slightly adapted)
+# Colors (Oceanic Next)
 colors:
+  # Default colors
   primary:
-    background: '0x111111'
-    foreground: '0xcccccc'
+    background: '0x1b2b34'
+    foreground: '0xd8dee9'
 
+  # Normal colors
   normal:
-    black:   '0x222222'
-    red:     '0xab4642'
-    green:   '0xa1b56c'
-    yellow:  '0xf7ca88'
-    blue:    '0x7cafc2'
-    magenta: '0xba8baf'
-    cyan:    '0x86c1b9'
-    white:   '0xd8d8d8'
+    black:   '0x29414f'
+    red:     '0xec5f67'
+    green:   '0x99c794'
+    yellow:  '0xfac863'
+    blue:    '0x6699cc'
+    magenta: '0xc594c5'
+    cyan:    '0x5fb3b3'
+    white:   '0x65737e'
 
+  # Bright colors
   bright:
-    black:   '0x585858'
-    red:     '0xab4642'
-    green:   '0xa1b56c'
-    yellow:  '0xf7ca88'
-    blue:    '0x7cafc2'
-    magenta: '0xba8baf'
-    cyan:    '0x86c1b9'
-    white:   '0xf8f8f8'
+    black:   '0x405860'
+    red:     '0xec5f67'
+    green:   '0x99c794'
+    yellow:  '0xfac863'
+    blue:    '0x6699cc'
+    magenta: '0xc594c5'
+    cyan:    '0x5fb3b3'
+    white:   '0xadb5c0'
+
+# Colors (from Base16 Default Dark, slightly adapted)
+# colors:
+#   primary:
+#     background: '0x111111'
+
+#     foreground: '0xcccccc'
+
+#   normal:
+#     black:   '0x111111'
+#     red:     '0xab4642'
+#     green:   '0xa1b56c'
+#     yellow:  '0xf7ca88'
+#     blue:    '0x7cafc2'
+#     magenta: '0xba8baf'
+#     cyan:    '0x86c1b9'
+#     white:   '0xd8d8d8'
+
+#   bright:
+#     black:   '0x383838'
+#     red:     '0xab4642'
+#     green:   '0xa1b56c'
+#     yellow:  '0xf7ca88'
+#     blue:    '0x7cafc2'
+#     magenta: '0xba8baf'
+#     cyan:    '0x86c1b9'
+#     white:   '0xf8f8f8'
 
 mouse_bindings:
   - { mouse: Middle, action: ToggleFullscreen }
