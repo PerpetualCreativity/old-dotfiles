@@ -39,14 +39,22 @@ getgit () {
         branchname=$(git branch --show-current)
         psvar[1]="$psvar[1]%F{blue}$branchname%f "
 
-        commits=$(git cherry -v | wc -l | sed 's/^ *//')
-        if [ $commits != "0" ]; then psvar[1]="$psvar[1]%F{blue}↑$commits%f "; fi
+        git rev-parse --abbrev-ref @{upstream} &> /dev/null
+        if [ $? -eq 0 ]
+        then
+            unpushed=$(git cherry -v origin/$branchname $branchname | wc -l | sed 's/^ *//')
+            if [ $unpushed != "0" ]; then psvar[1]="$psvar[1]%F{blue}↑$unpushed%f "; fi
+            unpulled=$(git cherry -v $branchname origin/$branchname | wc -l | sed 's/^ *//')
+            if [ $unpulled != "0" ]; then psvar[1]="$psvar[1]%F{blue}↓$unpulled%f "; fi
+        else
+            psvar[1]="$psvar[1]%F{red}⇡⇣%f "
+        fi
 
         added=$(git diff --cached --name-only | wc -l | sed 's/^ *//')
         if [ $added != "0" ]; then psvar[1]="$psvar[1]%F{green}+$added%f "; fi
 
         modified=$(git ls-files --modified --exclude-standard | wc -l | sed 's/^ *//')
-        if [ $modified != "0" ]; then  psvar[1]="$psvar[1]%F{yellow}!$modified%f "; fi
+        if [ $modified != "0" ]; then psvar[1]="$psvar[1]%F{yellow}!$modified%f "; fi
 
         others=$(git ls-files --others --exclude-standard | wc -l | sed 's/^ *//')
         if [ $others != "0" ]; then psvar[1]="$psvar[1]%F{magenta}?$others%f "; fi
