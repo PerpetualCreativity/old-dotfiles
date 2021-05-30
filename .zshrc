@@ -61,6 +61,9 @@ getgit () {
 
         deleted=$(git ls-files --deleted --exclude-standard | wc -l | sed 's/^ *//')
         if [ $deleted != "0" ]; then psvar[1]="$psvar[1]%F{red}X$deleted%f "; fi
+
+        stash=$(git stash list | wc -l | sed 's/^ *//')
+        if [ $stash != "0" ]; then psvar[1]="$psvar[1]%F{white}<$stash%f "; fi
     fi
 }
 add-zsh-hook precmd getgit
