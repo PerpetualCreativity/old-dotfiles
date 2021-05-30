@@ -19,6 +19,8 @@ export PATH=$PATH:$HOME/go/bin
 
 export PATH=$PATH:$HOME/.cargo/bin
 
+export EDITOR=nvim
+
 export CLICOLOR
 
 alias quit=exit
