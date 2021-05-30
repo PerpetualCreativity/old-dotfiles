@@ -19,6 +19,8 @@ export PATH=$PATH:$HOME/go/bin
 
 export PATH=$PATH:$HOME/.cargo/bin
 
+export CLICOLOR
+
 alias quit=exit
 alias py=python3
 alias todo=todo.sh
