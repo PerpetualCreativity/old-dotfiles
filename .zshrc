@@ -14,14 +14,11 @@ export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
 
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 bindkey -v
-
 export PATH=$PATH:$HOME/go/bin
-
 export PATH=$PATH:$HOME/.cargo/bin
-
-export EDITOR=nvim
-
-export CLICOLOR
+export EDITOR=$(brew --prefix)/bin/nvim
+export BROWSER=w3m
+export CLICOLOR=true
 
 alias quit=exit
 alias py=python3
@@ -32,8 +29,19 @@ alias exa="exa --tree --sort=modified --reverse --icons --long --git --no-permis
 alias isodate='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias vim=nvim
 
+setopt correct # corrections
+setopt no_case_glob
+# history
+setopt extended_history
+setopt share_history
+setopt append_history
+setopt inc_append_history
+setopt hist_ignore_dups
+setopt hist_reduce_blanks
+setopt hist_verify
+
 # prompt
-setopt promptsubst
+setopt prompt_subst
 autoload -Uz add-zsh-hook
 getgit () {
     psvar[1]=;
@@ -76,3 +84,25 @@ add-zsh-hook precmd getgit
 PROMPT='%F{cyan}%~%f $psvar[1]%(0?.%F{green}.%F{red})%B>%b%f '
 RPROMPT='%(0?..%F{red}%?%f)'
 
+# The following lines were added by compinstall
+
+zstyle ':completion:*' auto-description '%d'
+zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' expand prefix suffix
+zstyle ':completion:*' file-sort modification
+zstyle ':completion:*' format '%d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' ignore-parents parent pwd .. directory
+zstyle ':completion:*' insert-unambiguous true
+zstyle ':completion:*' list-suffixes true
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'r:|[._-/]=** r:|=**' 'l:|=* r:|=*'
+zstyle ':completion:*' original false
+zstyle ':completion:*' preserve-prefix '//[^/]##/'
+zstyle ':completion:*' verbose true
+zstyle :compinstall filename '/Users/ved/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

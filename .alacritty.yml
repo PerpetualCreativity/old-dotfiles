@@ -12,15 +12,15 @@ class:
 font:
   normal:
     family: VictorMono Nerd Font
-    style: ExtraLight
-  bold:
     style: Regular
+  bold:
+    style: SemiBold
   italic:
-    style: ExtraLight Italic
-  bold_italic:
     style: Italic
+  bold_italic:
+    style: SemiBold Italic
   size: 21.25
-  use_thin_strokes: false
+  use_thin_strokes: true
 
 cursor:
   style:
