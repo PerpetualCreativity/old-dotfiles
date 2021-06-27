@@ -127,30 +127,37 @@ Plug 'nvim-lua/completion-nvim'
   let g:completion_sorting = 'length'
   let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
 " statusline
-Plug 'vim-airline/vim-airline'
-  let g:airline#extensions#scrollbar#enabled = 0
-  let g:airline_mode_map = {
-      \ '__'   : '-',
-      \ 'c'    : 'C',
-      \ 'i'    : 'I',
-      \ 'ic'   : 'I',
-      \ 'ix'   : 'I',
-      \ 'n'    : 'N',
-      \ 'multi': 'M',
-      \ 'ni'   : 'N',
-      \ 'no'   : 'N',
-      \ 'R'    : 'R',
-      \ 'Rv'   : 'R',
-      \ 's'    : 'S',
-      \ 'S'    : 'S',
-      \ ''   : 'S',
-      \ 't'    : 'T',
-      \ 'v'    : 'V',
-      \ 'V'    : 'V',
-      \ ''   : 'V',
-      \ }
-Plug 'vim-airline/vim-airline-themes'
-  let g:airline_theme='oceanicnextminimal'
+Plug 'datwaft/bubbly.nvim'
+  let g:bubbly_palette = {
+    \ 'background': '#1b2b34',
+    \ 'foreground': '#d8dee9',
+    \ 'black': '#29414f',
+    \ 'red': '#ec5f67',
+    \ 'green': '#99c794',
+    \ 'yellow': '#fac863',
+    \ 'blue': '#6699cc',
+    \ 'purple': '#c594c5',
+    \ 'cyan': '#5fb3b3',
+    \ 'white': '#adb5c0',
+    \ 'lightgrey': '#65737e',
+    \ 'darkgrey': '#405860',
+    \ }
+  let g:bubbly_statusline = [
+    \ 'mode',
+    \ 'branch',
+    \ 'path',
+    \ 'builtinlsp.current_function',
+    \ 'divisor',
+    \ 'filetype',
+    \ 'progress',
+    \ 'builtinlsp.diagnostic_count',
+    \ ]
+  let g:bubbly_characters = {
+    \ 'left': '',
+    \ 'right': '',
+    \ 'close': '',
+    \ 'bubble_separator': ' ',
+    \  }
 " visualise the Vim undo tree
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
   map <F3> :UndotreeToggle<CR>
