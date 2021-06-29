@@ -40,6 +40,7 @@ Plug 'preservim/nerdtree'
   autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
   let NERDTreeQuitOnOpen=1
   map <F2> :NERDTreeToggle<CR>
+  imap <F2> <esc>:NERDTreeToggle<CR>
 " better styling for nerdtree
 " open files with fzf (requires fzf installed)
 set rtp+=/usr/local/opt/fzf
@@ -50,7 +51,6 @@ Plug 'junegunn/fzf.vim'
   nnoremap <silent> <Leader>m      :Marks<CR>
 " emmet support in vim
 Plug 'mattn/emmet-vim', { 'for': ['html', 'jet', 'ejs'] }
-  let g:user_emmet_leader_key='<M-y>'
 " git, but in vim
 Plug 'tpope/vim-fugitive'
 " surround things easily, with (), '', etc
@@ -126,38 +126,6 @@ Plug 'nvim-lua/completion-nvim'
   let g:completion_enable_auto_popup = 1
   let g:completion_sorting = 'length'
   let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
-" statusline
-Plug 'datwaft/bubbly.nvim'
-  let g:bubbly_palette = {
-    \ 'background': '#1b2b34',
-    \ 'foreground': '#d8dee9',
-    \ 'black': '#29414f',
-    \ 'red': '#ec5f67',
-    \ 'green': '#99c794',
-    \ 'yellow': '#fac863',
-    \ 'blue': '#6699cc',
-    \ 'purple': '#c594c5',
-    \ 'cyan': '#5fb3b3',
-    \ 'white': '#adb5c0',
-    \ 'lightgrey': '#65737e',
-    \ 'darkgrey': '#405860',
-    \ }
-  let g:bubbly_statusline = [
-    \ 'mode',
-    \ 'branch',
-    \ 'path',
-    \ 'builtinlsp.current_function',
-    \ 'divisor',
-    \ 'filetype',
-    \ 'progress',
-    \ 'builtinlsp.diagnostic_count',
-    \ ]
-  let g:bubbly_characters = {
-    \ 'left': '',
-    \ 'right': '',
-    \ 'close': '',
-    \ 'bubble_separator': ' ',
-    \  }
 " visualise the Vim undo tree
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
   map <F3> :UndotreeToggle<CR>
@@ -167,9 +135,9 @@ Plug 'tommcdo/vim-lion'
 Plug 'preservim/tagbar', { 'on': 'TagbarToggle' }
   map <F4> :TagbarToggle<CR>
 " floating terminal for neovim
-Plug 'voldikss/vim-floaterm'
-  let g:floaterm_keymap_toggle = '<F1>'
-  highlight FloatermBorder guibg=none
+Plug 'numtostr/FTerm.nvim'
+  map <F1> :lua require'FTerm'.toggle()<CR>
+  map! <F1> :lua require'FTerm'.toggle()<CR>
 " repeat plugin commands with .
 Plug 'tpope/vim-repeat'
 " automatically detect tab/space
@@ -249,7 +217,7 @@ else
 endif
 
 " correcting spelling mistakes on the fly
-inoremap <C-k> <c-g>u<Esc>[s1z=`]a<c-g>u
+inoremap <m-k> <c-g>u<Esc>[s1z=`]a<c-g>u
 
 " this is the only useful function from $VIMRUNTIME/defaults.vim that isn't
 " already in this .vimrc.
@@ -266,8 +234,58 @@ hi LineNr guibg=NONE ctermbg=NONE
 hi SignColumn guibg=NONE ctermbg=NONE
 hi EndOfBuffer guibg=NONE ctermbg=NONE
 
-" setup lsp
+" statusline -----------------------------------------------------------------
+" design inspired by bubbly, but logic is pretty different.
+
+function s:stl_hi(group, bgcolor, fgcolor)
+  execute 'highlight User' . a:group . ' guibg=' . a:bgcolor . ' guifg=' . a:fgcolor . ' gui=bold'
+endfunction
+function s:stl_hi_both(group, bgcolor, fgcolor)
+  call s:stl_hi(a:group  , a:bgcolor, a:fgcolor)
+  call s:stl_hi(a:group+1, a:fgcolor, a:bgcolor)
+endfunction
+
+" reset
+call s:stl_hi(1, g:terminal_color_background, g:terminal_color_background)
+" cyan
+call s:stl_hi_both(2, g:terminal_color_background, g:terminal_color_6)
+" blue
+call s:stl_hi_both(4, g:terminal_color_background, g:terminal_color_4)
+" magenta
+call s:stl_hi_both(6, g:terminal_color_background, g:terminal_color_5)
+" red
+call s:stl_hi_both(8, g:terminal_color_background, g:terminal_color_1)
+
+set statusline=
+set statusline+=%2*%3*
+set statusline+=%{mode()}
+set statusline+=%2*\ %1*
+" git branch.
+if system('git rev-parse') !~? 'fatal'
+  let branchname=substitute(system('git branch --show-current'), '\n\+$', '', '')
+  set statusline+=%6*%7*
+  set statusline+=%{branchname}
+  set statusline+=%6*\ %1*
+endif
+
+set statusline+=%4*%5*
+" filename
+set statusline+=%f
+" modified
+set statusline+=%{%&modified?'\ %9*\ +%8*':'%4*'%}
+set statusline+=\ %1*
+
+set statusline+=%= " divide the statusline to the right
+
+set statusline+=%6*%7*
+set statusline+=w%{luaeval('vim.lsp.diagnostic.get_count(0,[[Warning]])')}\ 
+set statusline+=%9*
+set statusline+=\ e%{luaeval('vim.lsp.diagnostic.get_count(0,[[Error]])')}
+set statusline+=%8*%1*
+
+
 lua << EOF
+-- setup lsp
 lspc = require'lspconfig'
   lspc.gopls.setup{}
   lspc.rust_analyzer.setup{}
@@ -275,5 +293,7 @@ lspc = require'lspconfig'
   lspc.pyls.setup{}
   lspc.hls.setup{}
   lspc.racket_langserver.setup{}
+-- set up FTerm
+require'FTerm'.setup()
 EOF
 
