@@ -9,9 +9,9 @@
 [diff]
 	tool = vimdiff
 [core]
-    editor = vim
+	editor = vim
 [color]
-    ui = true
+	ui = true
 
 [credential]
 	helper = osxkeychain

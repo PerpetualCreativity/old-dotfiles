@@ -2,12 +2,9 @@
 window:
   decorations: none
   startup_mode: Maximized
+  dynamic_padding: true
 
 dynamic_title: true
-
-class:
-  instance: Alacritty
-  general: Alacritty
 
 font:
   normal:
