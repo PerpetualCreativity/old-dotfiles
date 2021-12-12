@@ -108,22 +108,30 @@ Plug 'neovim/nvim-lspconfig'
   sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=LspDiagnosticsSignInformation
   sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl= numhl=LspDiagnosticsSignHint
 " use lsp or treesitter for omnicomplete
-Plug 'nvim-lua/completion-nvim'
-  set completeopt=menuone,noinsert,noselect
-  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" <CMD> "\<Tab>"
-  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" <CMD> "\<S-Tab>"
-  autocmd BufEnter * lua require'completion'.on_attach()
-  imap <tab> <Plug>(completion_smart_tab)
-  imap <s-tab> <Plug>(completion_smart_s_tab)
-  let g:completion_enable_auto_popup = 1
-  let g:completion_enable_snippet = 'UltiSnips'
-  let g:completion_sorting = 'length'
-  let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy', 'all']
-  Plug 'SirVer/ultisnips'
-    let g:UltiSnipsExpandTrigger="<M-d>"
-    let g:UltiSnipsJumpForwardTrigger="<M-f>"
-    let g:UltiSnipsJumpBackwardTrigger="<M-f>"
-    Plug 'honza/vim-snippets'
+Plug 'hrsh7th/nvim-compe'
+  let g:compe = {}
+    let g:compe.enabled = v:true
+    let g:compe.autocomplete = v:true
+    let g:compe.debug = v:false
+    let g:compe.min_length = 1
+    let g:compe.preselect = 'disable'
+    let g:compe.throttle_time = 80
+    let g:compe.source_timeout = 200
+    let g:compe.resolve_timeout = 800
+    let g:compe.incomplete_delay = 400
+    let g:compe.max_abbr_width = 100
+    let g:compe.max_kind_width = 100
+    let g:compe.max_menu_width = 100
+    let g:compe.documentation = v:true
+    let g:compe.source = {}
+      let g:compe.source.path = v:true
+      let g:compe.source.buffer = v:true
+      let g:compe.source.calc = v:true
+      let g:compe.source.nvim_lsp = v:true
+      let g:compe.source.nvim_lua = v:true
+      let g:compe.source.emoji = v:true
+  inoremap <silent><expr> <tab> pumvisible() ? "\<c-n>" : "\<TAB>"
+  inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
 " auto-close pairs
 Plug 'cohama/lexima.vim'
 " visualise the Vim undo tree
@@ -333,12 +341,10 @@ set tabline=%!Tabline()
 lua << EOF
 -- set up lsp
 lspc = require'lspconfig'
-  lspc.gopls.setup{}
-  lspc.rust_analyzer.setup{}
-  lspc.tsserver.setup{}
-  lspc.pylsp.setup{}
-  lspc.hls.setup{}
-  lspc.racket_langserver.setup{}
+lsps = { 'gopls', 'rust_analyzer', 'tsserver', 'pylsp', 'hls', 'racket_langserver' }
+for _,lsp in ipairs(lsps) do
+  lspc[lsp].setup{}
+end
 -- set up treesitter
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained",

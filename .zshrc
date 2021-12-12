@@ -16,7 +16,9 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 bindkey -v
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/bin
-export EDITOR=$(brew --prefix)/bin/nvim
+export EDITOR=nvim
+export PAGER="nvim -R"
+export MANPAGER="nvim -c 'set ft=man' -"
 export BROWSER=w3m
 export CLICOLOR=true
 
