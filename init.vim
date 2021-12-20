@@ -19,19 +19,13 @@ endif
 
 " plugins --------------------------------------------------------------------
 call plug#begin(stdpath('data') . '/plugged')
-" Plug 'mhartington/oceanic-next'
-"   if (has("termguicolors"))
-"       set termguicolors
-"   endif
-"   let g:oceanic_next_terminal_bold = 0
-"   let g:oceanic_next_terminal_italic = 1
-"   syntax on
+" a good colorsheme
 Plug 'embark-theme/vim', { 'as': 'embark' }
   if (has("termguicolors"))
       set termguicolors
   endif
   let g:embark_terminal_italics = 1
-" file explorer
+" better file tree (than netrw)
 Plug 'preservim/nerdtree'
   Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
     let g:NERDTreeFileExtensionHighlightFullName = 1
