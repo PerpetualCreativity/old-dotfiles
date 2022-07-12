@@ -1,4 +1,5 @@
 export PATH="/Users/ved/.local/bin:/usr/local/opt/libpq/bin:$PATH"
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
 
 [ -f "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env" ] && source "${GHCUP_INSTALL_BASE_PREFIX:=$HOME}/.ghcup/env"
 
@@ -17,19 +18,16 @@ bindkey -v
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/bin
 export EDITOR=nvim
-export PAGER="nvim -R"
-export MANPAGER="nvim -c 'set ft=man' -"
-export BROWSER=w3m
 export CLICOLOR=true
 
 alias quit=exit
 alias py=python3
-alias todo=todo.sh
 alias cd=z
 alias ds=dstask
 alias exa="exa --tree --sort=modified --reverse --icons --long --git --no-permissions --no-filesize --no-user --no-time --git-ignore"
 alias isodate='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias vim=nvim
+alias vlime='sbcl --load ~/.local/share/nvim/plugged/vlime/lisp/start-vlime.lisp'
 
 setopt correct # corrections
 setopt no_case_glob

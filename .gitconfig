@@ -12,6 +12,7 @@
 	editor = vim
 [color]
 	ui = true
+	pager = no
 
 [credential]
 	helper = osxkeychain

@@ -77,8 +77,6 @@ Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': 'markdown' }
   autocmd FileType markdown syntax match notexspell /\$[^\$]\+\$/ contains=@NoSpell
 " treesitter support
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
-  " set foldmethod=expr
-  " set foldexpr=nvim_treesitter#foldexpr()
 " Language Server Protocol config
 Plug 'neovim/nvim-lspconfig'
   nnoremap gD        <Cmd>lua vim.lsp.buf.declaration()<CR>
@@ -86,14 +84,11 @@ Plug 'neovim/nvim-lspconfig'
   nnoremap K         <Cmd>lua vim.lsp.buf.hover()<CR>
   nnoremap gi        <Cmd>lua vim.lsp.buf.implementation()<CR>
   nnoremap <C-k>     <Cmd>lua vim.lsp.buf.signature_help()<CR>
-  nnoremap <space>wa <Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>
-  nnoremap <space>wr <Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>
-  nnoremap <space>wl <Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>
   nnoremap <space>D  <Cmd>lua vim.lsp.buf.type_definition()<CR>opts)
   nnoremap <space>rn <Cmd>lua vim.lsp.buf.rename()<CR>
   nnoremap <space>ca <Cmd>lua vim.lsp.buf.code_action()<CR>
   nnoremap gr        <Cmd>lua vim.lsp.buf.references()<CR>
-  nnoremap <space>e  <Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+  nnoremap <space>e  <Cmd>lua vim.diagnostic.open_float()<CR>
   nnoremap [d        <Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
   nnoremap ]d        <Cmd>lua vim.lsp.diagnostic.goto_next()<CR>
   nnoremap <space>q  <Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
@@ -128,6 +123,7 @@ Plug 'hrsh7th/nvim-compe'
   inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
 " auto-close pairs
 Plug 'cohama/lexima.vim'
+  autocmd FileType commonlisp let b:lexima_disabled=1
 " visualise the Vim undo tree
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
   map <F3> <CMD>UndotreeToggle<CR>
@@ -140,6 +136,13 @@ Plug 'numtostr/FTerm.nvim'
 Plug 'tpope/vim-repeat'
 " automatically detect tab/space
 Plug 'tpope/vim-sleuth'
+" automatically close HTML tabs
+Plug 'alvan/vim-closetag'
+  let g:closetag_filenames = '*.html'
+" better common lisp editing
+Plug 'vlime/vlime', {'for': 'commonlisp', 'rtp': 'vim/'}
+" amazing lisp editing using indents or parentheses
+Plug 'eraserhd/parinfer-rust', {'do': 'cargo build --release'}
 call plug#end()
 
 " vim options ----------------------------------------------------------------
@@ -163,6 +166,7 @@ set hlsearch
 set ignorecase
 set smartcase
 set foldenable
+set foldmethod=syntax
 set foldlevelstart=10
 set foldnestmax=10
 " mouse support.
@@ -173,7 +177,7 @@ set relativenumber
 set clipboard=unnamed
 " see :h shortmess
 set shortmess=asIc
-set laststatus=2
+set laststatus=3
 " I already have a statusbar
 set noshowmode
 " preview commands as you type
@@ -186,6 +190,7 @@ set showcmd
 
 " filetypes
 autocmd BufNewFile,BufFilePre,BufRead *.rkt set filetype=racket
+autocmd BufNewFile,BufFilePre,BufRead *.lisp set filetype=commonlisp
 
 " mappings and other fun -----------------------------------------------------
 nmap <C-l><C-l> <CMD>set invrelativenumber<CR>
@@ -233,74 +238,68 @@ hi StatusLine guifg=g:terminal_color_15 guibg=g:terminal_color_7
 hi StatusLineNC guifg=g:terminal_color_0 guibg=g:terminal_color_7
 
 " statusline and tabline -----------------------------------------------------
-" design inspired by bubbly, but logic is completely different.
-
-" statusline
 
 function s:stl_hi(...)
-  execute 'highlight User' . a:1 . ' guibg=' . a:2 . ' guifg=' . a:3 . ' gui=' . ((a:0==4) ? a:4 : 'bold')
+  execute 'highlight User' . a:1 . ' guibg=g:terminal_color_7 guifg=' . a:2 . ' cterm=' . a:3 . ' gui=' . a:3
 endfunction
-function s:stl_hi_both(group, bgcolor, fgcolor)
-  call s:stl_hi(a:group  , a:bgcolor, a:fgcolor)
-  call s:stl_hi(a:group+1, a:fgcolor, a:bgcolor)
-endfunction
-
 " reset / treesitter
-call s:stl_hi(1, g:terminal_color_7, g:terminal_color_8, 'none')
-" cyan
-call s:stl_hi_both(2, g:terminal_color_7, g:terminal_color_14)
-" blue
-call s:stl_hi_both(4, g:terminal_color_7, g:terminal_color_12)
+call s:stl_hi(1, g:terminal_color_8, 'none')
+" blue bold
+call s:stl_hi(2, g:terminal_color_12, 'bold')
+" blue normal
+call s:stl_hi(3, g:terminal_color_12, 'none')
+" cyan italic
+call s:stl_hi(4, g:terminal_color_14, 'italic')
+" cyan bold
+call s:stl_hi(5, g:terminal_color_14, 'bold')
 " magenta
-call s:stl_hi_both(6, g:terminal_color_7, g:terminal_color_13)
+call s:stl_hi(6, g:terminal_color_13, 'bold')
 " red
-call s:stl_hi_both(8, g:terminal_color_7, g:terminal_color_1)
+call s:stl_hi(7, g:terminal_color_1,  'bold')
+" yellow
+call s:stl_hi(8, g:terminal_color_11, 'bold')
+" green
+call s:stl_hi(9, g:terminal_color_10, 'bold')
 
-set statusline=
-set statusline+=%2*%3*
-set statusline+=%{mode()}
-set statusline+=%2*\ %1*
+set statusline=%1*
+set statusline+=%2*%{mode()}%1*
 " git branch.
 if system('git rev-parse') !~? 'fatal'
   let branchname=substitute(system('git branch --show-current'), '\n\+$', '', '')
-  set statusline+=%6*%7*
-  set statusline+=%{branchname}
-  set statusline+=%6*\ %1*
+  set statusline+=\ \<%4*%{branchname}%1*\>
+else
+  set statusline+=\ \·
 endif
 
-set statusline+=%4*%5*
 " filename
-set statusline+=%f
+set statusline+=\ %1*%{fnamemodify(bufname(\"%\"),\":~:.:h\")}/
+set statusline+=%2*%{fnamemodify(bufname(\"%\"),\":t:r\")}
 " modified
-set statusline+=%{%&modified?'\ %9*\ +%8*':'%4*'%}
-set statusline+=\ %1*
+set statusline+=%{%&modified?'%7*':&readonly?'%8*':'%5*'%}.
+set statusline+=%3*%{fnamemodify(bufname(\"%\"),\":e\")}
+" modified
+set statusline+=%{%&readonly?'\ %7*!':''%}%1*
 
 set statusline+=%= " divide the statusline to the right
 
-" treesitter statusline
-set statusline+=%{(nvim_treesitter#statusline()=='null')?'':nvim_treesitter#statusline().'\ '}
-
 " lsp diagnostics
-set statusline+=%6*%7*
-set statusline+=%{luaeval('vim.lsp.diagnostic.get_count(0,[[Warning]])')}\ 
-set statusline+=%9*
-set statusline+=\ %{luaeval('vim.lsp.diagnostic.get_count(0,[[Error]])')}
-set statusline+=%8*%1*
+set statusline+=%8*%{luaeval('vim.lsp.diagnostic.get_count(0,[[Hint]])')}%1*
+set statusline+=%1*\·%9*%{luaeval('vim.lsp.diagnostic.get_count(0,[[Info]])')}%1*
+set statusline+=%1*\·%6*%{luaeval('vim.lsp.diagnostic.get_count(0,[[Warning]])')}
+set statusline+=%1*\·%7*%{luaeval('vim.lsp.diagnostic.get_count(0,[[Error]])')}%1*
 
 " tabline
 
 function! Tabline()
   let s = ''
   for i in range(tabpagenr('$'))
+    let s .= '%1*<'
     let x = i+1
     if x == tabpagenr()
-      let s .= '%2*%3*'
+      let s .= '%4*'
     else
-      let s .= '%4*%5*'
+      let s .= '%2*'
     endif
-
-    let s .= '%' . x . 'T'
-    let s .= x . ' '
 
     let n = '' " buffer names
     let m = 0 " tab modified
@@ -312,21 +311,11 @@ function! Tabline()
         let m += 1
       endif
     endfor
-
-    let n = substitute(n, ' | $', '', '')
-    let s .= n
-
-    if m > 0
-      let s .=' %9* +%8*'
-    else
-      if x == tabpagenr()
-        let s .= '%2*'
-      else
-        let s .= '%4*'
-      endif
+    let s .= substitute(n, ' | $', '', '')
+    if m>0
+      let s .= '%7* +'
     endif
-
-    let s .= '%1* '
+    let s .= '%1*> '
   endfor
   return s
 endfunction
@@ -341,12 +330,10 @@ for _,lsp in ipairs(lsps) do
 end
 -- set up treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained",
+  ensure_installed = "all",
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = true,
   },
-  indent = { enable=true },
 }
 EOF
-
