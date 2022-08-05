@@ -49,9 +49,6 @@ sudo pip3 install 'python-lsp-server[all]'
 ghcup install hls
 raco pkg install racket-langserver
 
-# install debug adapters (for vim)
-brew install lldb delve
-
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # powerful keyboard remapping
     brew install --cask karabiner-elements

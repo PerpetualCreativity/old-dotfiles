@@ -79,19 +79,19 @@ Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': 'markdown' }
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 " language server protocol config
 Plug 'neovim/nvim-lspconfig'
-  nnoremap gD        <Cmd>lua vim.lsp.buf.declaration()<CR>
-  nnoremap gd        <Cmd>lua vim.lsp.buf.definition()<CR>
-  nnoremap K         <Cmd>lua vim.lsp.buf.hover()<CR>
-  nnoremap gi        <Cmd>lua vim.lsp.buf.implementation()<CR>
-  nnoremap <C-k>     <Cmd>lua vim.lsp.buf.signature_help()<CR>
-  nnoremap <space>D  <Cmd>lua vim.lsp.buf.type_definition()<CR>opts)
-  nnoremap <space>rn <Cmd>lua vim.lsp.buf.rename()<CR>
-  nnoremap <space>ca <Cmd>lua vim.lsp.buf.code_action()<CR>
-  nnoremap gr        <Cmd>lua vim.lsp.buf.references()<CR>
-  nnoremap <space>e  <Cmd>lua vim.diagnostic.open_float()<CR>
-  nnoremap [d        <Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-  nnoremap ]d        <Cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-  nnoremap <space>q  <Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+  nnoremap gD        <cmd>lua vim.lsp.buf.declaration()<CR>
+  nnoremap gd        <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap K         <cmd>lua vim.lsp.buf.hover()<CR>
+  nnoremap gi        <cmd>lua vim.lsp.buf.implementation()<CR>
+  nnoremap <C-k>     <cmd>lua vim.lsp.buf.signature_help()<CR>
+  nnoremap <space>D  <cmd>lua vim.lsp.buf.type_definition()<CR>opts)
+  nnoremap <space>rn <cmd>lua vim.lsp.buf.rename()<CR>
+  nnoremap <space>ca <cmd>lua vim.lsp.buf.code_action()<CR>
+  nnoremap gr        <cmd>lua vim.lsp.buf.references()<CR>
+  nnoremap <space>e  <cmd>lua vim.diagnostic.open_float()<CR>
+  nnoremap [d        <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+  nnoremap ]d        <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+  nnoremap <space>q  <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
   sign define LspDiagnosticsSignError text= texthl=LspDiagnosticsSignError linehl= numhl=LspDiagnosticsSignError
   sign define LspDiagnosticsSignWarning text= texthl=LspDiagnosticsSignWarning linehl= numhl=LspDiagnosticsSignWarning
   sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=LspDiagnosticsSignInformation
@@ -121,8 +121,6 @@ Plug 'hrsh7th/nvim-compe'
       let g:compe.source.emoji = v:true
   inoremap <silent><expr> <tab> pumvisible() ? "\<c-n>" : "\<TAB>"
   inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
-" debugger using debug adapters
-Plug 'mfussenegger/nvim-dap'
 " auto-close pairs
 Plug 'cohama/lexima.vim'
   autocmd FileType commonlisp let b:lexima_disabled=1
@@ -336,75 +334,12 @@ for _,lsp in ipairs(lsps) do
 end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with (
-  vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics,
-    {
-      virtual_text = true,
-      signs = true,
-    }
-  )
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
+    virtual_text = true,
+    signs = true,
+  }
 )
--- dap
-local dap = require'dap'
----- rust
-dap.adapters.lldb = {
-  type = 'executable',
-  command = 'lldb-vscode',
-  name = 'lldb'
-}
-dap.configurations.rust = {
-  {
-    name = 'Launch',
-    type = 'lldb',
-    request = 'launch',
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    env = function()
-      local variables = {}
-      for k, v in pairs(vim.fn.environ()) do
-        table.insert(variables, string.format("%s=%s", k, v))
-      end
-      return variables
-    end,
-    cwd = '${workspaceFolder}',
-    stopOnEntry = false,
-    args = {},
-  }
-}
-dap.configurations.c = dap.configurations.rust
-dap.configurations.cpp = dap.configurations.rust
----- go
-dap.adapters.go = {
-  type = 'server',
-  port = '${port}',
-  executable = {
-    command = 'dlv',
-    args = {'dap', '-l', '127.0.0.1:${port}'}
-  }
-}
-dap.configurations.go = {
-  {
-    type = "delve",
-    name = "Debug",
-    request = "launch",
-    program = "${file}",
-  },
-  {
-    type = "delve",
-    name = "Debug test",
-    request = "launch",
-    mode = "test",
-    program = "${file}",
-  },
-  {
-    type = "delve",
-    name = "Debug test (go.mod)",
-    request = "launch",
-    mode = "test",
-    program = "./${relativeFileDirname}",
-  },
-}
 -- treesitter
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",
