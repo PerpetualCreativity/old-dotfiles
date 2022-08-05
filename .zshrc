@@ -1,3 +1,5 @@
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/Users/ved/.local/bin:/usr/local/opt/libpq/bin:$PATH"
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
 

@@ -1,5 +1,3 @@
-# Simply comment the lines for things you don't want to install/run
-
 # homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew update
@@ -37,6 +35,9 @@ brew install \
     zoxide \ # faster + fuzzier `cd`
     fzf fd # fuzzy finder and better find
 
+# install fzf's zsh plugin
+/usr/local/opt/fzf/install
+
 # install my most used languages
 brew install cmake python nodejs go haskell-stack racket
 sudo npm install -g typescript
@@ -48,12 +49,15 @@ sudo pip3 install 'python-lsp-server[all]'
 ghcup install hls
 raco pkg install racket-langserver
 
+# install debug adapters (for vim)
+brew install lldb delve
+
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # powerful keyboard remapping
     brew install --cask karabiner-elements
     ln -s ~/.dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 
-    brew install alacritty # the best terminal emulator...
+    brew install iterm2 # the best terminal emulator...
     brew install --cask figma \ # ui/ux prototyping and design
         monitorcontrol \ # control external monitor brightness
         grandperspective # a great visual way of analysing disk usage.

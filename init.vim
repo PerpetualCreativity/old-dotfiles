@@ -77,7 +77,7 @@ Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': 'markdown' }
   autocmd FileType markdown syntax match notexspell /\$[^\$]\+\$/ contains=@NoSpell
 " treesitter support
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
-" Language Server Protocol config
+" language server protocol config
 Plug 'neovim/nvim-lspconfig'
   nnoremap gD        <Cmd>lua vim.lsp.buf.declaration()<CR>
   nnoremap gd        <Cmd>lua vim.lsp.buf.definition()<CR>
@@ -121,6 +121,8 @@ Plug 'hrsh7th/nvim-compe'
       let g:compe.source.emoji = v:true
   inoremap <silent><expr> <tab> pumvisible() ? "\<c-n>" : "\<TAB>"
   inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
+" debugger using debug adapters
+Plug 'mfussenegger/nvim-dap'
 " auto-close pairs
 Plug 'cohama/lexima.vim'
   autocmd FileType commonlisp let b:lexima_disabled=1
@@ -182,8 +184,6 @@ set laststatus=3
 set noshowmode
 " preview commands as you type
 set inccommand=nosplit
-" turn off signcolumn
-set signcolumn=no
 " make key code timeout small (to combat lag when hitting <ESC>
 set ttimeout ttimeoutlen=10
 set showcmd
@@ -227,6 +227,14 @@ autocmd BufReadPost *
   \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
   \ |   exe "normal! g`\""
   \ | endif
+
+" remember folds on save
+" https://stackoverflow.com/a/54739345
+augroup remember_folds
+  autocmd!
+  autocmd BufWinLeave *.* mkview 1
+  autocmd BufWinEnter *.* silent! loadview 1
+augroup END
 
 " initialize colorscheme
 colorscheme embark
@@ -277,8 +285,6 @@ set statusline+=%2*%{fnamemodify(bufname(\"%\"),\":t:r\")}
 " modified
 set statusline+=%{%&modified?'%7*':&readonly?'%8*':'%5*'%}.
 set statusline+=%3*%{fnamemodify(bufname(\"%\"),\":e\")}
-" modified
-set statusline+=%{%&readonly?'\ %7*!':''%}%1*
 
 set statusline+=%= " divide the statusline to the right
 
@@ -322,13 +328,84 @@ endfunction
 set tabline=%!Tabline()
 
 lua << EOF
--- set up lsp
+-- lsp
 lspc = require'lspconfig'
 lsps = { 'gopls', 'rust_analyzer', 'tsserver', 'pylsp', 'hls', 'racket_langserver' }
 for _,lsp in ipairs(lsps) do
   lspc[lsp].setup{}
 end
--- set up treesitter
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with (
+  vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+      virtual_text = true,
+      signs = true,
+    }
+  )
+)
+-- dap
+local dap = require'dap'
+---- rust
+dap.adapters.lldb = {
+  type = 'executable',
+  command = 'lldb-vscode',
+  name = 'lldb'
+}
+dap.configurations.rust = {
+  {
+    name = 'Launch',
+    type = 'lldb',
+    request = 'launch',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    env = function()
+      local variables = {}
+      for k, v in pairs(vim.fn.environ()) do
+        table.insert(variables, string.format("%s=%s", k, v))
+      end
+      return variables
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+    args = {},
+  }
+}
+dap.configurations.c = dap.configurations.rust
+dap.configurations.cpp = dap.configurations.rust
+---- go
+dap.adapters.go = {
+  type = 'server',
+  port = '${port}',
+  executable = {
+    command = 'dlv',
+    args = {'dap', '-l', '127.0.0.1:${port}'}
+  }
+}
+dap.configurations.go = {
+  {
+    type = "delve",
+    name = "Debug",
+    request = "launch",
+    program = "${file}",
+  },
+  {
+    type = "delve",
+    name = "Debug test",
+    request = "launch",
+    mode = "test",
+    program = "${file}",
+  },
+  {
+    type = "delve",
+    name = "Debug test (go.mod)",
+    request = "launch",
+    mode = "test",
+    program = "./${relativeFileDirname}",
+  },
+}
+-- treesitter
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",
   highlight = {
