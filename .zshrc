@@ -30,6 +30,7 @@ alias exa="exa --tree --sort=modified --reverse --icons --long --git --no-permis
 alias isodate='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias vim=nvim
 alias vlime='sbcl --load ~/.local/share/nvim/plugged/vlime/lisp/start-vlime.lisp'
+notes () { vim ~/notes/$1 }
 
 setopt correct # corrections
 setopt no_case_glob
