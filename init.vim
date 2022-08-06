@@ -89,9 +89,9 @@ Plug 'neovim/nvim-lspconfig'
   nnoremap <space>ca <cmd>lua vim.lsp.buf.code_action()<CR>
   nnoremap gr        <cmd>lua vim.lsp.buf.references()<CR>
   nnoremap <space>e  <cmd>lua vim.diagnostic.open_float()<CR>
-  nnoremap [d        <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-  nnoremap ]d        <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-  nnoremap <space>q  <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+  nnoremap [d        <cmd>lua vim.diagnostic.goto_prev()<CR>
+  nnoremap ]d        <cmd>lua vim.diagnostic.goto_next()<CR>
+  nnoremap <space>q  <cmd>lua vim.diagnostic.setloclist()<CR>
   sign define LspDiagnosticsSignError text= texthl=LspDiagnosticsSignError linehl= numhl=LspDiagnosticsSignError
   sign define LspDiagnosticsSignWarning text= texthl=LspDiagnosticsSignWarning linehl= numhl=LspDiagnosticsSignWarning
   sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=LspDiagnosticsSignInformation
@@ -268,7 +268,7 @@ call s:stl_hi(8, g:terminal_color_11, 'bold')
 call s:stl_hi(9, g:terminal_color_10, 'bold')
 
 set statusline=%1*
-set statusline+=%2*%{mode()}%1*
+set statusline+=%5*%{mode()}%1*
 " git branch.
 if system('git rev-parse') !~? 'fatal'
   let branchname=substitute(system('git branch --show-current'), '\n\+$', '', '')
@@ -287,10 +287,10 @@ set statusline+=%3*%{fnamemodify(bufname(\"%\"),\":e\")}
 set statusline+=%= " divide the statusline to the right
 
 " lsp diagnostics
-set statusline+=%8*%{luaeval('vim.lsp.diagnostic.get_count(0,[[Hint]])')}%1*
-set statusline+=%1*\·%9*%{luaeval('vim.lsp.diagnostic.get_count(0,[[Info]])')}%1*
-set statusline+=%1*\·%6*%{luaeval('vim.lsp.diagnostic.get_count(0,[[Warning]])')}
-set statusline+=%1*\·%7*%{luaeval('vim.lsp.diagnostic.get_count(0,[[Error]])')}%1*
+set statusline+=%8*%{%luaeval('#vim.diagnostic.get(0,{severity=vim.diagnostic.severity.HINT})')%}%1*\·
+set statusline+=%9*%{%luaeval('#vim.diagnostic.get(0,{severity=vim.diagnostic.severity.INFO})')%}%1*\·
+set statusline+=%6*%{%luaeval('#vim.diagnostic.get(0,{severity=vim.diagnostic.severity.WARN})')%}%1*\·
+set statusline+=%7*%{%luaeval('#vim.diagnostic.get(0,{severity=vim.diagnostic.severity.ERROR})')%}%1*
 
 " tabline
 
