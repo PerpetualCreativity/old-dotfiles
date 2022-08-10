@@ -25,6 +25,7 @@ Plug 'embark-theme/vim', { 'as': 'embark' }
       set termguicolors
   endif
   let g:embark_terminal_italics = 1
+Plug '~/projects/editree'
 " better file tree (than netrw)
 Plug 'preservim/nerdtree'
   Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': 'NERDTreeToggle' }
@@ -96,6 +97,20 @@ Plug 'neovim/nvim-lspconfig'
   sign define LspDiagnosticsSignWarning text= texthl=LspDiagnosticsSignWarning linehl= numhl=LspDiagnosticsSignWarning
   sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=LspDiagnosticsSignInformation
   sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl= numhl=LspDiagnosticsSignHint
+" debugger
+Plug 'puremourning/vimspector', {'do': ':VimspectorUpdate'}
+  let g:vimspector_install_gadgets = ['CodeLLDB', 'delve', 'local-lua-debugger-vscode', 'vscode-firefox-debug']
+  nmap <F4>         <Plug>VimspectorContinue
+  nmap <F5>         <Plug>VimspectorStop
+  nmap <leader><F4> <Plug>VimspectorRestart
+  nmap <F6>         <Plug>VimspectorPause
+  nmap <F7>         <Plug>VimspectorToggleBreakpoint
+  nmap <leader><F7> <Plug>VimspectorToggleConditionalBreakpoint
+  nmap <F8>         <Plug>VimspectorAddFunctionBreakpoint
+  nmap <leader><F8> <Plug>VimspectorAddFunctionBreakpoint
+  nmap <F9>         <Plug>VimspectorStepOver
+  nmap <F10>        <Plug>VimspectorStepInto
+  nmap <F11>        <Plug>VimspectorStepOut
 " use lsp or treesitter for omnicomplete
 Plug 'hrsh7th/nvim-compe'
   let g:compe = {}
@@ -185,12 +200,15 @@ set inccommand=nosplit
 " make key code timeout small (to combat lag when hitting <ESC>
 set ttimeout ttimeoutlen=10
 set showcmd
+set signcolumn=yes
 
 " filetypes
 autocmd BufNewFile,BufFilePre,BufRead *.rkt set filetype=racket
 autocmd BufNewFile,BufFilePre,BufRead *.lisp set filetype=commonlisp
+autocmd BufNewFile,BufFilePre,BufRead *.vim set shiftwidth=2
 
 " mappings and other fun -----------------------------------------------------
+map Y y$
 nmap <C-l><C-l> <CMD>set invrelativenumber<CR>
 nmap <tab> <C-w>w
 nmap <S-tab> <C-w>W
@@ -328,7 +346,7 @@ set tabline=%!Tabline()
 lua << EOF
 -- lsp
 lspc = require'lspconfig'
-lsps = { 'gopls', 'rust_analyzer', 'tsserver', 'pylsp', 'hls', 'racket_langserver' }
+lsps = { 'gopls', 'rust_analyzer', 'tsserver', 'pylsp', 'hls', 'racket_langserver', 'sumneko_lua' }
 for _,lsp in ipairs(lsps) do
   lspc[lsp].setup{}
 end

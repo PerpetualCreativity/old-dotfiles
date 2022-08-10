@@ -7,10 +7,6 @@ export PATH="/usr/local/opt/openjdk/bin:$PATH"
 
 unsetopt BEEP # stop beeping at me :)
 
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh # zsh syntax highlighting
-
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh # zsh autosuggestions
-
 eval "$(zoxide init zsh)" # zoxide
 
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
@@ -31,6 +27,7 @@ alias isodate='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias vim=nvim
 alias vlime='sbcl --load ~/.local/share/nvim/plugged/vlime/lisp/start-vlime.lisp'
 notes () { vim ~/notes/$1 }
+mkcd () { mkdir $1 && cd $1 }
 
 setopt correct # corrections
 setopt no_case_glob
@@ -102,10 +99,21 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'r:|[._-/]=**
 zstyle ':completion:*' original false
 zstyle ':completion:*' preserve-prefix '//[^/]##/'
 zstyle ':completion:*' verbose true
-zstyle :compinstall filename '/Users/ved/.zshrc'
+zstyle :compinstall filename '/Users/vulcan/.zshrc'
 
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+sourceif () { [ -f $1 ] && source $1 }
+if [ "$(uname -s)" = "Darwin" ]; then
+    sourceif ~/.fzf.zsh
+    sourceif $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    sourceif $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+elif [ -f /etc/debian_version ]; then
+    sourceif /usr/share/doc/fzf/examples/key-bindings.zsh
+    sourceif /usr/share/doc/fzf/examples/completion.zsh
+    sourceif /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    sourceif /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
