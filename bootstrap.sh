@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-# homebrew
 if [ "$(uname -s)" = "Darwin" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew update
@@ -22,8 +21,8 @@ chsh -s $(which zsh)
 ln -s ~/.dotfiles/.zshrc ~/.zshrc
 
 # install the vim-plug plugin manager
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
 # neovim
 install neovim --HEAD
