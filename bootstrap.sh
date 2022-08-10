@@ -22,7 +22,7 @@ ln -s ~/.dotfiles/.zshrc ~/.zshrc
 
 # install the vim-plug plugin manager
 curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # neovim
 install neovim --HEAD
@@ -36,18 +36,18 @@ ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/.dotfiles/.alacritty.yml ~/.alacritty.yml
 
 install \
-    pandoc \ # powerful file converter
-    ffmpeg \ # multimedia processing
-    zoxide \ # a smarter cd
-    youtube-dl \ # for downloading videos
-    gh \ # github cli
-    so \ # stackoverflow/stackexchange cli
-    tldr \ # simple man pages
+    pandoc \
+    ffmpeg \
+    zoxide \
+    youtube-dl \
+    gh \
+    so \
+    tldr \
     \
-    zsh-autosuggestions \ # autosuggestions for zsh
-    zsh-syntax-highlighting \ # syntax highlighting for zsh
-    zoxide \ # faster + fuzzier `cd`
-    fzf fd # fuzzy finder and better find
+    zsh-autosuggestions \
+    zsh-syntax-highlighting \
+    zoxide \
+    fzf fd
 
 # install my most used languages
 install cmake python nodejs go haskell-stack racket
@@ -66,9 +66,9 @@ if [ "$(uname -s)" = "Darwin" ]; then
     ln -s ~/.dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 
     brew install --cask iterm2 # the best terminal emulator...
-    brew install --cask figma \ # ui/ux prototyping and design
-        monitorcontrol \ # control external monitor brightness
-        grandperspective # a great visual way of analysing disk usage.
+    brew install --cask figma \
+        monitorcontrol \
+        grandperspective
     # fonts
     brew tap homebrew/cask-fonts
     brew install --cask font-victor-mono-nerd-font

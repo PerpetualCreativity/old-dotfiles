@@ -81,7 +81,7 @@ getgit () {
 add-zsh-hook precmd getgit
 # not using %v, and using $psvar and setopt promptsubst instead,
 # allows us to use escape sequences in psvar
-PROMPT='%F{cyan}%~%f $psvar[1]%(0?.%F{green}.%F{red})%B>%b%f '
+PROMPT='%F{magenta}%n%f %F{cyan}%~%f $psvar[1]%(0?.%F{green}.%F{red})%B>%b%f '
 RPROMPT='%(0?..%F{red}%?%f)'
 
 # The following lines were added by compinstall
