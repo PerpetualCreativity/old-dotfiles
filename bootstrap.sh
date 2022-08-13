@@ -66,6 +66,7 @@ if [ "$(uname -s)" = "Darwin" ]; then
     ln -s ~/.dotfiles/karabiner.json ~/.config/karabiner/karabiner.json
 
     brew install --cask iterm2 # the best terminal emulator...
+    brew install --cask firefox
     brew install --cask figma \
         monitorcontrol \
         grandperspective
