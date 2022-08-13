@@ -69,6 +69,8 @@ if [ "$(uname -s)" = "Darwin" ]; then
     brew install --cask firefox
     brew install --cask figma \
         monitorcontrol \
+        betterdisplay \
+        topnotch \
         grandperspective
     # fonts
     brew tap homebrew/cask-fonts
