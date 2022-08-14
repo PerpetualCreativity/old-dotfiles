@@ -1,8 +1,20 @@
-#!/usr/bin/env zsh
-
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew update
-export HOMEBREW_NO_AUTO_UPDATE=1 # prevent homebrew from updating itself each package install
+#!/usr/bin/env sh
+if [ "$(uname -s)" = "Darwin" ]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew update
+    export HOMEBREW_NO_AUTO_UPDATE=1 # prevent homebrew from updating itself each package install
+    install () {
+        brew install "$@"
+    }
+elif [ -f /etc/debian_version ]; then
+    sudo apt update && sudo apt upgrade
+    install () {
+        sudo apt install "$@"
+    }
+else
+    echo "this script only runs on macOS and Debian-based Linux distributions"
+    exit
+fi
 
 # use zsh as the shell
 chsh -s $(which zsh)
@@ -13,7 +25,7 @@ curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --c
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # neovim
-brew install neovim --HEAD
+install neovim --HEAD
 # link init.vim
 ln -s ~/.dotfiles/init.vim ~/.config/nvim/
 
@@ -23,7 +35,7 @@ ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
 # link alacritty config
 ln -s ~/.dotfiles/.alacritty.yml ~/.alacritty.yml
 
-brew install \
+install \
     pandoc \
     ffmpeg \
     zoxide \
@@ -38,11 +50,11 @@ brew install \
     fzf fd
 
 # install my most used languages
-brew install cmake python nodejs go haskell-stack racket
+install cmake python nodejs go haskell-stack racket
 sudo npm install -g typescript
 
 # install language servers (for vim)
-brew install gopls rust-analyzer lua-language-server
+install gopls rust-analyzer lua-language-server
 sudo npm install -g typescript-language-server
 sudo pip3 install 'python-lsp-server[all]'
 ghcup install hls
