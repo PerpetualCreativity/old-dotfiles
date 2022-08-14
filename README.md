@@ -1,8 +1,10 @@
 # PerpetualCreativity's dotfiles
-These are my dotfiles. For macOS and Debian-based Linux distros only.
+
+These are my dotfiles.
 
 ## Install
 
+0. Install `zsh`, then launch a `zsh` session.
 0. `git clone https://github.com/PerpetualCreativity/dotfiles.git ~/.dotfiles`
 1. `~/.dotfiles/bootstrap.sh`
 2. restart: `sudo shutdown -r now`
