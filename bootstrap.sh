@@ -61,6 +61,13 @@ ghcup install hls
 raco pkg install racket-langserver
 
 if [ "$(uname -s)" = "Darwin" ]; then
+    # install zathura and set up
+    brew install girara --HEAD
+    brew install zathura --HEAD
+    brew install zathura-pdf-poppler
+    mkdir -p $(brew --prefix zathura)/lib/zathura
+    ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+    ln -s ~/.dotfiles/zathurarc ~/.config/zathura/zathurarc
     # powerful keyboard remapping
     brew install --cask karabiner-elements
     ln -s ~/.dotfiles/karabiner.json ~/.config/karabiner/karabiner.json

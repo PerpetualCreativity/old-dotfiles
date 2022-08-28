@@ -65,17 +65,13 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'RRethy/vim-hexokinase', { 'for': ['html', 'css'], 'do': 'make hexokinase' }
   let g:Hexokinase_highlighters = ['virtual']
 " pandoc markdown support
+Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': 'markdown' }
-  autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
-  autocmd BufNewFile,BufFilePre,BufRead *.md set syntax=markdown.pandoc
-  let g:pandoc#syntax#conceal#urls=1
-  autocmd syntax markdown.pandoc set conceallevel=2
-  " autocmd syntax markdown.pandoc highlight! link Conceal Special
-  " spell check
-  autocmd FileType markdown setlocal spell spelllang=en_gb
+  autocmd FileType pandoc setlocal spell spelllang=en_gb
+  " autocmd FileType pandoc autocmd BufWrite <buffer> silent !pandoc -o ./output.html -s --katex --filter=$HOME/projects/stable/pandoc-asciimath2tex/filter.js %
   " turn off spell checking between $$ in markdown (latex)
   " https://vi.stackexchange.com/a/19991
-  autocmd FileType markdown syntax match notexspell /\$[^\$]\+\$/ contains=@NoSpell
+  autocmd FileType pandoc syntax match notexspell /\$[^\$]\+\$/ contains=@NoSpell
 " treesitter support
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 " language server protocol config
@@ -97,25 +93,11 @@ Plug 'neovim/nvim-lspconfig'
   sign define LspDiagnosticsSignWarning text= texthl=LspDiagnosticsSignWarning linehl= numhl=LspDiagnosticsSignWarning
   sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=LspDiagnosticsSignInformation
   sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl= numhl=LspDiagnosticsSignHint
-" debugger
-Plug 'puremourning/vimspector', {'do': ':VimspectorUpdate'}
-  let g:vimspector_install_gadgets = ['CodeLLDB', 'delve', 'local-lua-debugger-vscode', 'vscode-firefox-debug']
-  nmap <F4>         <Plug>VimspectorContinue
-  nmap <F5>         <Plug>VimspectorStop
-  nmap <leader><F4> <Plug>VimspectorRestart
-  nmap <F6>         <Plug>VimspectorPause
-  nmap <F7>         <Plug>VimspectorToggleBreakpoint
-  nmap <leader><F7> <Plug>VimspectorToggleConditionalBreakpoint
-  nmap <F8>         <Plug>VimspectorAddFunctionBreakpoint
-  nmap <leader><F8> <Plug>VimspectorAddFunctionBreakpoint
-  nmap <F9>         <Plug>VimspectorStepOver
-  nmap <F10>        <Plug>VimspectorStepInto
-  nmap <F11>        <Plug>VimspectorStepOut
 " use lsp or treesitter for omnicomplete
 Plug 'hrsh7th/nvim-compe'
   let g:compe = {}
     let g:compe.enabled = v:true
-    let g:compe.autocomplete = v:true
+    let g:compe.autocomplete = v:false
     let g:compe.debug = v:false
     let g:compe.min_length = 1
     let g:compe.preselect = 'disable'
@@ -134,6 +116,7 @@ Plug 'hrsh7th/nvim-compe'
       let g:compe.source.nvim_lsp = v:true
       let g:compe.source.nvim_lua = v:true
       let g:compe.source.emoji = v:true
+  autocmd BufEnter *.md let g:compe.autocomplete=v:false
   inoremap <silent><expr> <tab> pumvisible() ? "\<c-n>" : "\<TAB>"
   inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
 " auto-close pairs
@@ -206,6 +189,23 @@ set signcolumn=yes
 autocmd BufNewFile,BufFilePre,BufRead *.rkt set filetype=racket
 autocmd BufNewFile,BufFilePre,BufRead *.lisp set filetype=commonlisp
 autocmd BufNewFile,BufFilePre,BufRead *.vim set shiftwidth=2
+
+call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': 'pandoc'})
+call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': 'pandoc'})
+call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': 'pandoc'})
+call lexima#add_rule({'char': '<Enter>', 'at': '\$\$\%#', 'input_after': '$$', 'filetype': 'pandoc'})
+
+function! MathReRender(out)
+  call system('pandoc --filter ~/projects/stable/pandoc-asciimath2tex/filter.js -o ' . a:out . ' &', join(getline(1, '$'), "\n"))
+endfunction
+function! MathRender()
+  let l:bufn = bufname('%')
+  let l:out = fnamemodify(l:bufn, ':p:h') . '/' . fnamemodify(l:bufn, ':t:r') . '.pdf'
+  call MathReRender(l:out)
+  call system('zathura ' . l:out . ' &')
+  execute "autocmd InsertLeave <buffer> call MathReRender('" . l:out . "')"
+endfunction
+command! -buffer -nargs=0 MathRender :call MathRender()
 
 " mappings and other fun -----------------------------------------------------
 map Y y$
