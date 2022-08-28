@@ -1,3 +1,5 @@
+[ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/Users/ved/.local/bin:/usr/local/opt/libpq/bin:$PATH"
@@ -17,6 +19,9 @@ export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/bin
 export EDITOR=nvim
 export CLICOLOR=true
+export HISTFILE=~/.zsh_history
+export SAVEHIST=1000
+export TERM=xterm-256color
 
 alias quit=exit
 alias py=python3
@@ -26,7 +31,8 @@ alias exa="exa --tree --sort=modified --reverse --icons --long --git --no-permis
 alias isodate='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias vim=nvim
 alias vlime='sbcl --load ~/.local/share/nvim/plugged/vlime/lisp/start-vlime.lisp'
-notes () { vim ~/notes/$1 }
+notes () { vim ~/notes/$1.md }
+alias todo='notes todo'
 mkcd () { mkdir $1 && cd $1 }
 
 setopt correct # corrections
