@@ -1,5 +1,6 @@
 set selection-clipboard clipboard
 set scroll-step 1
+set scroll-hstep 0.5
 set recolor true
 set recolor-darkcolor "#eeffff"
 set recolor-lightcolor "#1e1c31"

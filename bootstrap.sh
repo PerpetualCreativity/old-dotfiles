@@ -29,6 +29,11 @@ install neovim --HEAD
 # link init.vim
 ln -s ~/.dotfiles/init.vim ~/.config/nvim/
 
+# helix
+install helix
+# link config
+ln -s ~/.dotfiles/helix-config.toml ~/.config/helix/config.toml
+
 # link git config
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
 
@@ -62,11 +67,13 @@ raco pkg install racket-langserver
 
 if [ "$(uname -s)" = "Darwin" ]; then
     # install zathura and set up
+    brew tap zegervdv/zathura
     brew install girara --HEAD
     brew install zathura --HEAD
     brew install zathura-pdf-poppler
     mkdir -p $(brew --prefix zathura)/lib/zathura
     ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+    mkdir ~/.config/zathura
     ln -s ~/.dotfiles/zathurarc ~/.config/zathura/zathurarc
     # powerful keyboard remapping
     brew install --cask karabiner-elements

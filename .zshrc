@@ -1,4 +1,5 @@
 [ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/llvm/bin:$PATH"
@@ -21,7 +22,6 @@ export EDITOR=nvim
 export CLICOLOR=true
 export HISTFILE=~/.zsh_history
 export SAVEHIST=1000
-export TERM=xterm-256color
 
 alias quit=exit
 alias py=python3
@@ -34,6 +34,8 @@ alias vlime='sbcl --load ~/.local/share/nvim/plugged/vlime/lisp/start-vlime.lisp
 notes () { vim ~/notes/$1.md }
 alias todo='notes todo'
 mkcd () { mkdir $1 && cd $1 }
+cls () { cd $1 && ls }
+alias phoenix='vim ~/gt/phoenix/vip-scc.wiki/Ved-Thiru.md'
 
 setopt correct # corrections
 setopt no_case_glob

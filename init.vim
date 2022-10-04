@@ -68,10 +68,12 @@ Plug 'RRethy/vim-hexokinase', { 'for': ['html', 'css'], 'do': 'make hexokinase' 
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax', { 'for': 'markdown' }
   autocmd FileType pandoc setlocal spell spelllang=en_gb
-  " autocmd FileType pandoc autocmd BufWrite <buffer> silent !pandoc -o ./output.html -s --katex --filter=$HOME/projects/stable/pandoc-asciimath2tex/filter.js %
   " turn off spell checking between $$ in markdown (latex)
   " https://vi.stackexchange.com/a/19991
   autocmd FileType pandoc syntax match notexspell /\$[^\$]\+\$/ contains=@NoSpell
+" (la)tex support
+Plug 'lervag/vimtex'
+  let g:vimtex_view_method = 'zathura'
 " treesitter support
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
 " language server protocol config
@@ -94,31 +96,13 @@ Plug 'neovim/nvim-lspconfig'
   sign define LspDiagnosticsSignInformation text= texthl=LspDiagnosticsSignInformation linehl= numhl=LspDiagnosticsSignInformation
   sign define LspDiagnosticsSignHint text= texthl=LspDiagnosticsSignHint linehl= numhl=LspDiagnosticsSignHint
 " use lsp or treesitter for omnicomplete
-Plug 'hrsh7th/nvim-compe'
-  let g:compe = {}
-    let g:compe.enabled = v:true
-    let g:compe.autocomplete = v:false
-    let g:compe.debug = v:false
-    let g:compe.min_length = 1
-    let g:compe.preselect = 'disable'
-    let g:compe.throttle_time = 80
-    let g:compe.source_timeout = 200
-    let g:compe.resolve_timeout = 800
-    let g:compe.incomplete_delay = 400
-    let g:compe.max_abbr_width = 100
-    let g:compe.max_kind_width = 100
-    let g:compe.max_menu_width = 100
-    let g:compe.documentation = v:true
-    let g:compe.source = {}
-      let g:compe.source.path = v:true
-      let g:compe.source.buffer = v:true
-      let g:compe.source.calc = v:true
-      let g:compe.source.nvim_lsp = v:true
-      let g:compe.source.nvim_lua = v:true
-      let g:compe.source.emoji = v:true
-  autocmd BufEnter *.md let g:compe.autocomplete=v:false
-  inoremap <silent><expr> <tab> pumvisible() ? "\<c-n>" : "\<TAB>"
-  inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
+  Plug 'hrsh7th/cmp-cmdline'
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'L3MON4D3/LuaSnip'
+    Plug 'saadparwaiz1/cmp_luasnip'
 " auto-close pairs
 Plug 'cohama/lexima.vim'
   autocmd FileType commonlisp let b:lexima_disabled=1
@@ -189,11 +173,12 @@ set signcolumn=yes
 autocmd BufNewFile,BufFilePre,BufRead *.rkt set filetype=racket
 autocmd BufNewFile,BufFilePre,BufRead *.lisp set filetype=commonlisp
 autocmd BufNewFile,BufFilePre,BufRead *.vim set shiftwidth=2
+autocmd BufNewFile,BufFilePre,BufRead *.md set shiftwidth=4 tabstop=4
 
-call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': 'pandoc'})
-call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': 'pandoc'})
-call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': 'pandoc'})
-call lexima#add_rule({'char': '<Enter>', 'at': '\$\$\%#', 'input_after': '$$', 'filetype': 'pandoc'})
+" call lexima#add_rule({'char': '$', 'input_after': '$', 'filetype': 'pandoc'})
+" call lexima#add_rule({'char': '$', 'at': '\%#\$', 'leave': 1, 'filetype': 'pandoc'})
+" call lexima#add_rule({'char': '<BS>', 'at': '\$\%#\$', 'delete': 1, 'filetype': 'pandoc'})
+" call lexima#add_rule({'char': '<Enter>', 'at': '\$\$\%#', 'input_after': '$$', 'filetype': 'pandoc'})
 
 function! MathReRender(out)
   call system('pandoc --filter ~/projects/stable/pandoc-asciimath2tex/filter.js -o ' . a:out . ' &', join(getline(1, '$'), "\n"))
@@ -344,11 +329,67 @@ endfunction
 set tabline=%!Tabline()
 
 lua << EOF
+-- autocomplete
+local cmp = require'cmp'
+
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~=0 and vim.api.nvim_buf_get_lines(0, line-1, line, true)[1]:sub(col, col):match("%s") == nil
+end
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+    end,
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+  }),
+  mapping = cmp.mapping.preset.insert({
+    ['<Tab>'] = function(fallback)
+      if not cmp.select_next_item() then
+        if vim.bo.buftype ~= 'prompt' and has_words_before() then
+          cmp.complete()
+        else
+          fallback()
+        end
+      end
+    end,
+
+    ['<S-Tab>'] = function(fallback)
+      if not cmp.select_prev_item() then
+        if vim.bo.buftype ~= 'prompt' and has_words_before() then
+          cmp.complete()
+        else
+          fallback()
+        end
+      end
+    end,
+  })
+})
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+local capabilities = require'cmp_nvim_lsp'.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 -- lsp
 lspc = require'lspconfig'
 lsps = { 'gopls', 'rust_analyzer', 'tsserver', 'pylsp', 'hls', 'racket_langserver', 'sumneko_lua' }
 for _,lsp in ipairs(lsps) do
-  lspc[lsp].setup{}
+  lspc[lsp].setup{
+    capabilities = capabilities
+  }
 end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with (
