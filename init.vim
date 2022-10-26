@@ -41,7 +41,7 @@ Plug 'preservim/nerdtree'
   map <F2> <CMD>NERDTreeToggle<CR>
   imap <F2> <esc><CMD>NERDTreeToggle<CR>
 " open files with fzf (requires fzf installed)
-set rtp+=/usr/local/opt/fzf
+Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
   nnoremap <silent> <Space><Space> <CMD>Files<CR>
   nnoremap <silent> <Leader>b      <CMD>Buffers<CR>
@@ -103,6 +103,8 @@ Plug 'neovim/nvim-lspconfig'
   Plug 'hrsh7th/nvim-cmp'
   Plug 'L3MON4D3/LuaSnip'
     Plug 'saadparwaiz1/cmp_luasnip'
+  Plug 'williamboman/mason.nvim'
+    Plug 'williamboman/mason-lspconfig.nvim'
 " auto-close pairs
 Plug 'cohama/lexima.vim'
   autocmd FileType commonlisp let b:lexima_disabled=1
@@ -381,12 +383,17 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
-local capabilities = require'cmp_nvim_lsp'.update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require'cmp_nvim_lsp'.default_capabilities()
 
 -- lsp
+require'mason'.setup()
+mlspc = require'mason-lspconfig'
+mlspc.setup({
+  ensure_installed = { 'gopls', 'rust_analyzer' }
+})
+
 lspc = require'lspconfig'
-lsps = { 'gopls', 'rust_analyzer', 'tsserver', 'pylsp', 'hls', 'racket_langserver', 'sumneko_lua' }
-for _,lsp in ipairs(lsps) do
+for _,lsp in ipairs(mlspc.get_installed_servers()) do
   lspc[lsp].setup{
     capabilities = capabilities
   }

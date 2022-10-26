@@ -1,4 +1,4 @@
-theme = "base16_transparent"
+theme = "catppuccin_mocha"
 
 [editor]
 line-number = "relative"
@@ -9,4 +9,9 @@ cursorline = true
 insert = "bar"
 normal = "underline"
 select = "block"
+
+[editor.statusline]
+left = ["mode", "spacer", "spinner", "diagnostics"]
+center = ["file-name"]
+right = ["selections"]
 
