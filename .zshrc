@@ -1,4 +1,6 @@
-[ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+[ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)" 
+[[ ! -r /Users/vulcan/.opam/opam-init/init.zsh ]] || source /Users/vulcan/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+export PATH="/Users/vulcan/scratch/zig/build/stage3/bin:$PATH"
 export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
@@ -30,10 +32,11 @@ alias exa="exa --tree --sort=modified --reverse --icons --long --git --no-permis
 alias isodate='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias vim=nvim
 alias vlime='sbcl --load ~/.local/share/nvim/plugged/vlime/lisp/start-vlime.lisp'
-notes () { vim ~/notes/$1.md }
+notes () { hx ~/notes/$1.md }
 alias todo='notes todo'
 mkcd () { mkdir $1 && cd $1 }
 cls () { cd $1 && ls }
+alias h='hx .'
 alias phoenix='vim ~/gt/phoenix/vip-scc.wiki/Ved-Thiru.md'
 
 setopt correct # corrections

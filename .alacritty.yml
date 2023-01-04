@@ -1,3 +1,5 @@
+env:
+  TERM: xterm-256color
 
 window:
   decorations: none
@@ -17,7 +19,7 @@ font:
   bold_italic:
     style: SemiBold Italic
   size: 21.25
-  use_thin_strokes: true
+  AppleFontSmoothing: true
 
 cursor:
   style:
@@ -28,67 +30,118 @@ mouse:
 
 live_config_reload: true
 
-# Colors (Oceanic Next)
 colors:
-  # Default colors
-  primary:
-    background: '0x1b2b34'
-    foreground: '0xd8dee9'
+    primary:
+        background: "#1E1E2E" # base
+        foreground: "#CDD6F4" # text
+        # Bright and dim foreground colors
+        dim_foreground: "#CDD6F4" # text
+        bright_foreground: "#CDD6F4" # text
 
-  # Normal colors
-  normal:
-    black:   '0x29414f'
-    red:     '0xec5f67'
-    green:   '0x99c794'
-    yellow:  '0xfac863'
-    blue:    '0x6699cc'
-    magenta: '0xc594c5'
-    cyan:    '0x5fb3b3'
-    white:   '0x65737e'
+    # Cursor colors
+    cursor:
+        text: "#1E1E2E" # base
+        cursor: "#F5E0DC" # rosewater
+    vi_mode_cursor:
+        text: "#1E1E2E" # base
+        cursor: "#B4BEFE" # lavender
 
-  # Bright colors
-  bright:
-    black:   '0x405860'
-    red:     '0xec5f67'
-    green:   '0x99c794'
-    yellow:  '0xfac863'
-    blue:    '0x6699cc'
-    magenta: '0xc594c5'
-    cyan:    '0x5fb3b3'
-    white:   '0xadb5c0'
+    # Search colors
+    search:
+        matches:
+            foreground: "#1E1E2E" # base
+            background: "#A6ADC8" # subtext0
+        focused_match:
+            foreground: "#1E1E2E" # base
+            background: "#A6E3A1" # green
+        footer_bar:
+            foreground: "#1E1E2E" # base
+            background: "#A6ADC8" # subtext0
 
-# Colors (from Base16 Default Dark, slightly adapted)
-# colors:
-#   primary:
-#     background: '0x111111'
+    # Keyboard regex hints
+    hints:
+        start:
+            foreground: "#1E1E2E" # base
+            background: "#F9E2AF" # yellow
+        end:
+            foreground: "#1E1E2E" # base
+            background: "#A6ADC8" # subtext0
 
-#     foreground: '0xcccccc'
+    # Selection colors
+    selection:
+        text: "#1E1E2E" # base
+        background: "#F5E0DC" # rosewater
 
-#   normal:
-#     black:   '0x111111'
-#     red:     '0xab4642'
-#     green:   '0xa1b56c'
-#     yellow:  '0xf7ca88'
-#     blue:    '0x7cafc2'
-#     magenta: '0xba8baf'
-#     cyan:    '0x86c1b9'
-#     white:   '0xd8d8d8'
+    # Normal colors
+    normal:
+        black: "#45475A" # surface1
+        red: "#F38BA8" # red
+        green: "#A6E3A1" # green
+        yellow: "#F9E2AF" # yellow
+        blue: "#89B4FA" # blue
+        magenta: "#F5C2E7" # pink
+        cyan: "#94E2D5" # teal
+        white: "#BAC2DE" # subtext1
 
-#   bright:
-#     black:   '0x383838'
-#     red:     '0xab4642'
-#     green:   '0xa1b56c'
-#     yellow:  '0xf7ca88'
-#     blue:    '0x7cafc2'
-#     magenta: '0xba8baf'
-#     cyan:    '0x86c1b9'
-#     white:   '0xf8f8f8'
+    # Bright colors
+    bright:
+        black: "#585B70" # surface2
+        red: "#F38BA8" # red
+        green: "#A6E3A1" # green
+        yellow: "#F9E2AF" # yellow
+        blue: "#89B4FA" # blue
+        magenta: "#F5C2E7" # pink
+        cyan: "#94E2D5" # teal
+        white: "#A6ADC8" # subtext0
 
-mouse_bindings:
-  - { mouse: Middle, action: ToggleFullscreen }
-  - { mouse: Right, action: SpawnNewInstance }
+    # Dim colors
+    dim:
+        black: "#45475A" # surface1
+        red: "#F38BA8" # red
+        green: "#A6E3A1" # green
+        yellow: "#F9E2AF" # yellow
+        blue: "#89B4FA" # blue
+        magenta: "#F5C2E7" # pink
+        cyan: "#94E2D5" # teal
+        white: "#BAC2DE" # subtext1
+
+    indexed_colors:
+        - { index: 16, color: "#FAB387" }
+        - { index: 17, color: "#F5E0DC" }
 
 key_bindings:
-  - { key: Paste, action: Paste }
-  - { key: Return, mods: Command, action: ToggleFullscreen }
+  - { key: Paste,                  action: Paste }
+  - { key: Return, mods: Command,  action: ToggleFullScreen }
+  - { key: N, mods: Command|Shift, action: SpawnNewInstance }
+
+  # open and close panes
+  - { key: D, mods: Command,       chars: "\x02\x25" }
+  - { key: D, mods: Command|Shift, chars: "\x02\x22" }
+  - { key: W, mods: Command,       chars: "\x02\x78" }
+  - { key: M, mods: Command,       chars: "\x02\x21" }
+  # move between panes
+  - { key: H, mods: Command, chars: "\x02\x1b\x5b\x44" }
+  - { key: J, mods: Command, chars: "\x02\x1b\x5b\x42" }
+  - { key: K, mods: Command, chars: "\x02\x1b\x5b\x41" }
+  - { key: L, mods: Command, chars: "\x02\x1b\x5b\x43" }
+  # windows
+  - { key: T, mods: Command,       chars: "\x02\x63" }
+  - { key: R, mods: Command,       chars: "\x02\x2c" }
+  - { key: W, mods: Command|Shift, chars: "\x02\x26" }
+  - { key: N, mods: Command,       chars: "\x02\x6e" }
+  - { key: P, mods: Command,       chars: "\x02\x70" }
+  # number keys
+  - { key: Key1, mods: Command, chars: "\x02\x31" }
+  - { key: Key2, mods: Command, chars: "\x02\x32" }
+  - { key: Key3, mods: Command, chars: "\x02\x33" }
+  - { key: Key4, mods: Command, chars: "\x02\x34" }
+  - { key: Key5, mods: Command, chars: "\x02\x35" }
+  - { key: Key6, mods: Command, chars: "\x02\x36" }
+  - { key: Key7, mods: Command, chars: "\x02\x37" }
+  - { key: Key8, mods: Command, chars: "\x02\x38" }
+  - { key: Key9, mods: Command, chars: "\x02\x39" }
+  # sessions
+  - { key: O, mods: Command,       chars: "\x02\x77" }
+  - { key: N, mods: Command|Shift, chars: "\x02\x29" }
+  - { key: P, mods: Command|Shift, chars: "\x02\x28" }
 

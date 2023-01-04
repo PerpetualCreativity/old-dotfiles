@@ -4,6 +4,7 @@ theme = "catppuccin_mocha"
 line-number = "relative"
 shell = ["zsh", "-c"]
 cursorline = true
+color-modes = true
 
 [editor.cursor-shape]
 insert = "bar"

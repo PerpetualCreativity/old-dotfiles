@@ -10,7 +10,7 @@
 	tool = vimdiff
 [core]
 	editor = vim
-	excludesfile = /Users/vulcan/.gitignore_global
+	excludesFile = ~/.gitignore_global
 [color]
 	ui = true
 	pager = no
