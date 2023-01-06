@@ -22,12 +22,10 @@ export PATH=$PATH:$HOME/.cargo/bin
 export EDITOR=nvim
 export CLICOLOR=true
 export HISTFILE=~/.zsh_history
-export SAVEHIST=1000
+export SAVEHIST=1000000
 
-alias quit=exit
 alias py=python3
 alias cd=z
-alias ds=dstask
 alias exa="exa --tree --sort=modified --reverse --icons --long --git --no-permissions --no-filesize --no-user --no-time --git-ignore"
 alias isodate='date -u +"%Y-%m-%dT%H:%M:%SZ"'
 alias vim=nvim
