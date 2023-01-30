@@ -1,6 +1,15 @@
 env:
   TERM: xterm-256color
 
+shell:
+  program: /bin/zsh
+  args:
+    - -l
+    - -c
+    - "tmux attach || tmux"
+
+alt_send_esc: true
+
 window:
   decorations: none
   startup_mode: Maximized
@@ -30,107 +39,190 @@ mouse:
 
 live_config_reload: true
 
-colors:
+themes:
+  mocha: &mocha
     primary:
-        background: "#1E1E2E" # base
-        foreground: "#CDD6F4" # text
-        # Bright and dim foreground colors
-        dim_foreground: "#CDD6F4" # text
-        bright_foreground: "#CDD6F4" # text
+      background: "#1E1E2E" # base
+      foreground: "#CDD6F4" # text
+      # Bright and dim foreground colors
+      dim_foreground: "#CDD6F4" # text
+      bright_foreground: "#CDD6F4" # text
 
     # Cursor colors
     cursor:
-        text: "#1E1E2E" # base
-        cursor: "#F5E0DC" # rosewater
+      text: "#1E1E2E" # base
+      cursor: "#F5E0DC" # rosewater
     vi_mode_cursor:
-        text: "#1E1E2E" # base
-        cursor: "#B4BEFE" # lavender
+      text: "#1E1E2E" # base
+      cursor: "#B4BEFE" # lavender
 
     # Search colors
     search:
-        matches:
-            foreground: "#1E1E2E" # base
-            background: "#A6ADC8" # subtext0
-        focused_match:
-            foreground: "#1E1E2E" # base
-            background: "#A6E3A1" # green
-        footer_bar:
-            foreground: "#1E1E2E" # base
-            background: "#A6ADC8" # subtext0
+      matches:
+        foreground: "#1E1E2E" # base
+        background: "#A6ADC8" # subtext0
+      focused_match:
+        foreground: "#1E1E2E" # base
+        background: "#A6E3A1" # green
+      footer_bar:
+        foreground: "#1E1E2E" # base
+        background: "#A6ADC8" # subtext0
 
     # Keyboard regex hints
     hints:
-        start:
-            foreground: "#1E1E2E" # base
-            background: "#F9E2AF" # yellow
-        end:
-            foreground: "#1E1E2E" # base
-            background: "#A6ADC8" # subtext0
+      start:
+        foreground: "#1E1E2E" # base
+        background: "#F9E2AF" # yellow
+      end:
+        foreground: "#1E1E2E" # base
+        background: "#A6ADC8" # subtext0
 
     # Selection colors
     selection:
-        text: "#1E1E2E" # base
-        background: "#F5E0DC" # rosewater
+      text: "#1E1E2E" # base
+      background: "#F5E0DC" # rosewater
 
     # Normal colors
     normal:
-        black: "#45475A" # surface1
-        red: "#F38BA8" # red
-        green: "#A6E3A1" # green
-        yellow: "#F9E2AF" # yellow
-        blue: "#89B4FA" # blue
-        magenta: "#F5C2E7" # pink
-        cyan: "#94E2D5" # teal
-        white: "#BAC2DE" # subtext1
+      black: "#45475A" # surface1
+      red: "#F38BA8" # red
+      green: "#A6E3A1" # green
+      yellow: "#F9E2AF" # yellow
+      blue: "#89B4FA" # blue
+      magenta: "#F5C2E7" # pink
+      cyan: "#94E2D5" # teal
+      white: "#BAC2DE" # subtext1
 
     # Bright colors
     bright:
-        black: "#585B70" # surface2
-        red: "#F38BA8" # red
-        green: "#A6E3A1" # green
-        yellow: "#F9E2AF" # yellow
-        blue: "#89B4FA" # blue
-        magenta: "#F5C2E7" # pink
-        cyan: "#94E2D5" # teal
-        white: "#A6ADC8" # subtext0
+      black: "#585B70" # surface2
+      red: "#F38BA8" # red
+      green: "#A6E3A1" # green
+      yellow: "#F9E2AF" # yellow
+      blue: "#89B4FA" # blue
+      magenta: "#F5C2E7" # pink
+      cyan: "#94E2D5" # teal
+      white: "#A6ADC8" # subtext0
 
     # Dim colors
     dim:
-        black: "#45475A" # surface1
-        red: "#F38BA8" # red
-        green: "#A6E3A1" # green
-        yellow: "#F9E2AF" # yellow
-        blue: "#89B4FA" # blue
-        magenta: "#F5C2E7" # pink
-        cyan: "#94E2D5" # teal
-        white: "#BAC2DE" # subtext1
+      black: "#45475A" # surface1
+      red: "#F38BA8" # red
+      green: "#A6E3A1" # green
+      yellow: "#F9E2AF" # yellow
+      blue: "#89B4FA" # blue
+      magenta: "#F5C2E7" # pink
+      cyan: "#94E2D5" # teal
+      white: "#BAC2DE" # subtext1
 
     indexed_colors:
-        - { index: 16, color: "#FAB387" }
-        - { index: 17, color: "#F5E0DC" }
+      - { index: 16, color: "#FAB387" }
+      - { index: 17, color: "#F5E0DC" }
+  latte: &latte
+    # Default colors
+    primary:
+      background: "#EFF1F5" # base
+      foreground: "#4C4F69" # text
+      # Bright and dim foreground colors
+      dim_foreground: "#4C4F69" # text
+      bright_foreground: "#4C4F69" # text
+
+    # Cursor colors
+    cursor:
+      text: "#EFF1F5" # base
+      cursor: "#DC8A78" # rosewater
+    vi_mode_cursor:
+      text: "#EFF1F5" # base
+      cursor: "#7287FD" # lavender
+
+    # Search colors
+    search:
+      matches:
+        foreground: "#EFF1F5" # base
+        background: "#6C6F85" # subtext0
+      focused_match:
+        foreground: "#EFF1F5" # base
+        background: "#40A02B" # green
+      footer_bar:
+        foreground: "#EFF1F5" # base
+        background: "#6C6F85" # subtext0
+
+    # Keyboard regex hints
+    hints:
+      start:
+        foreground: "#EFF1F5" # base
+        background: "#DF8E1D" # yellow
+      end:
+        foreground: "#EFF1F5" # base
+        background: "#6C6F85" # subtext0
+
+    # Selection colors
+    selection:
+      text: "#EFF1F5" # base
+      background: "#DC8A78" # rosewater
+
+    # Normal colors
+    normal:
+      black: "#5C5F77" # subtext1
+      red: "#D20F39" # red
+      green: "#40A02B" # green
+      yellow: "#DF8E1D" # yellow
+      blue: "#1E66F5" # blue
+      magenta: "#EA76CB" # pink
+      cyan: "#179299" # teal
+      white: "#ACB0BE" # surface2
+
+    # Bright colors
+    bright:
+      black: "#6C6F85" # subtext0
+      red: "#D20F39" # red
+      green: "#40A02B" # green
+      yellow: "#DF8E1D" # yellow
+      blue: "#1E66F5" # blue
+      magenta: "#EA76CB" # pink
+      cyan: "#179299" # teal
+      white: "#BCC0CC" # surface1
+
+    # Dim colors
+    dim:
+      black: "#5C5F77" # subtext1
+      red: "#D20F39" # red
+      green: "#40A02B" # green
+      yellow: "#DF8E1D" # yellow
+      blue: "#1E66F5" # blue
+      magenta: "#EA76CB" # pink
+      cyan: "#179299" # teal
+      white: "#ACB0BE" # surface2
+
+    indexed_colors:
+      - { index: 16, color: "#FE640B" }
+      - { index: 17, color: "#DC8A78" }
+
+colors: *mocha
 
 key_bindings:
   - { key: Paste,                  action: Paste }
   - { key: Return, mods: Command,  action: ToggleFullScreen }
-  - { key: N, mods: Command|Shift, action: SpawnNewInstance }
 
+  # tmux bindings
   # open and close panes
-  - { key: D, mods: Command,       chars: "\x02\x25" }
-  - { key: D, mods: Command|Shift, chars: "\x02\x22" }
-  - { key: W, mods: Command,       chars: "\x02\x78" }
-  - { key: M, mods: Command,       chars: "\x02\x21" }
+  - { key: D, mods: Command,       chars: "\x02\x25" }    # horizontal split
+  - { key: D, mods: Command|Shift, chars: "\x02\x22" }    # vertical split
+  - { key: W, mods: Command,       chars: "\x02\x78" }    # close pane
+  - { key: M, mods: Command,       chars: "\x02\x21" }    # turn split into new window
   # move between panes
-  - { key: H, mods: Command, chars: "\x02\x1b\x5b\x44" }
-  - { key: J, mods: Command, chars: "\x02\x1b\x5b\x42" }
-  - { key: K, mods: Command, chars: "\x02\x1b\x5b\x41" }
-  - { key: L, mods: Command, chars: "\x02\x1b\x5b\x43" }
+  - { key: H, mods: Command, chars: "\x02\x1b\x5b\x44" }  # move focus left
+  - { key: J, mods: Command, chars: "\x02\x1b\x5b\x42" }  # move focus right
+  - { key: K, mods: Command, chars: "\x02\x1b\x5b\x41" }  # move focus up
+  - { key: L, mods: Command, chars: "\x02\x1b\x5b\x43" }  # move focus down
   # windows
-  - { key: T, mods: Command,       chars: "\x02\x63" }
-  - { key: R, mods: Command,       chars: "\x02\x2c" }
-  - { key: W, mods: Command|Shift, chars: "\x02\x26" }
-  - { key: N, mods: Command,       chars: "\x02\x6e" }
-  - { key: P, mods: Command,       chars: "\x02\x70" }
-  # number keys
+  - { key: T, mods: Command,       chars: "\x02\x63" }    # new window
+  - { key: T, mods: Command|Shift, chars: "\x02\x40" }    # new window at pwd
+  - { key: R, mods: Command,       chars: "\x02\x2c" }    # rename window
+  - { key: W, mods: Command|Shift, chars: "\x02\x26" }    # close window
+  - { key: N, mods: Command,       chars: "\x02\x6e" }    # next window
+  - { key: P, mods: Command,       chars: "\x02\x70" }    # previous window
+  # switch to window
   - { key: Key1, mods: Command, chars: "\x02\x31" }
   - { key: Key2, mods: Command, chars: "\x02\x32" }
   - { key: Key3, mods: Command, chars: "\x02\x33" }
@@ -141,7 +233,88 @@ key_bindings:
   - { key: Key8, mods: Command, chars: "\x02\x38" }
   - { key: Key9, mods: Command, chars: "\x02\x39" }
   # sessions
-  - { key: O, mods: Command,       chars: "\x02\x77" }
-  - { key: N, mods: Command|Shift, chars: "\x02\x29" }
-  - { key: P, mods: Command|Shift, chars: "\x02\x28" }
+  - { key: O, mods: Command,       chars: "\x02\x77" }    # display sessions
+  - { key: N, mods: Command|Shift, chars: "\x02\x29" }    # next session
+  - { key: P, mods: Command|Shift, chars: "\x02\x28" }    # previous session
+  - { key: G, mods: Command,       chars: "\x02\x23" }    # set wd of session to pwd
+  # popup window
+  - { key: E, mods: Command, chars: "\x02\x6a" }          # toggle popup window
+  # tmux command line
+  - { key: Semicolon, mods: Command, chars: "\x02\x3a" }  # open tmux command line
 
+  # alt modifiers
+  - { key: A,         mods: Alt,       chars: "\x1ba"}
+  - { key: B,         mods: Alt,       chars: "\x1bb"}
+  - { key: C,         mods: Alt,       chars: "\x1bc"}
+  - { key: D,         mods: Alt,       chars: "\x1bd"}
+  - { key: E,         mods: Alt,       chars: "\x1be"}
+  - { key: F,         mods: Alt,       chars: "\x1bf"}
+  - { key: G,         mods: Alt,       chars: "\x1bg"}
+  - { key: H,         mods: Alt,       chars: "\x1bh"}
+  - { key: I,         mods: Alt,       chars: "\x1bi"}
+  - { key: J,         mods: Alt,       chars: "\x1bj"}
+  - { key: K,         mods: Alt,       chars: "\x1bk"}
+  - { key: L,         mods: Alt,       chars: "\x1bl"}
+  - { key: M,         mods: Alt,       chars: "\x1bm"}
+  - { key: N,         mods: Alt,       chars: "\x1bn"}
+  - { key: O,         mods: Alt,       chars: "\x1bo"}
+  - { key: P,         mods: Alt,       chars: "\x1bp"}
+  - { key: Q,         mods: Alt,       chars: "\x1bq"}
+  - { key: R,         mods: Alt,       chars: "\x1br"}
+  - { key: S,         mods: Alt,       chars: "\x1bs"}
+  - { key: T,         mods: Alt,       chars: "\x1bt"}
+  - { key: U,         mods: Alt,       chars: "\x1bu"}
+  - { key: V,         mods: Alt,       chars: "\x1bv"}
+  - { key: W,         mods: Alt,       chars: "\x1bw"}
+  - { key: X,         mods: Alt,       chars: "\x1bx"}
+  - { key: Y,         mods: Alt,       chars: "\x1by"}
+  - { key: Z,         mods: Alt,       chars: "\x1bz"}
+  - { key: A,         mods: Alt|Shift, chars: "\x1bA"}
+  - { key: B,         mods: Alt|Shift, chars: "\x1bB"}
+  - { key: C,         mods: Alt|Shift, chars: "\x1bC"}
+  - { key: D,         mods: Alt|Shift, chars: "\x1bD"}
+  - { key: E,         mods: Alt|Shift, chars: "\x1bE"}
+  - { key: F,         mods: Alt|Shift, chars: "\x1bF"}
+  - { key: G,         mods: Alt|Shift, chars: "\x1bG"}
+  - { key: H,         mods: Alt|Shift, chars: "\x1bH"}
+  - { key: I,         mods: Alt|Shift, chars: "\x1bI"}
+  - { key: J,         mods: Alt|Shift, chars: "\x1bJ"}
+  - { key: K,         mods: Alt|Shift, chars: "\x1bK"}
+  - { key: L,         mods: Alt|Shift, chars: "\x1bL"}
+  - { key: M,         mods: Alt|Shift, chars: "\x1bM"}
+  - { key: N,         mods: Alt|Shift, chars: "\x1bN"}
+  - { key: O,         mods: Alt|Shift, chars: "\x1bO"}
+  - { key: P,         mods: Alt|Shift, chars: "\x1bP"}
+  - { key: Q,         mods: Alt|Shift, chars: "\x1bQ"}
+  - { key: R,         mods: Alt|Shift, chars: "\x1bR"}
+  - { key: S,         mods: Alt|Shift, chars: "\x1bS"}
+  - { key: T,         mods: Alt|Shift, chars: "\x1bT"}
+  - { key: U,         mods: Alt|Shift, chars: "\x1bU"}
+  - { key: V,         mods: Alt|Shift, chars: "\x1bV"}
+  - { key: W,         mods: Alt|Shift, chars: "\x1bW"}
+  - { key: X,         mods: Alt|Shift, chars: "\x1bX"}
+  - { key: Y,         mods: Alt|Shift, chars: "\x1bY"}
+  - { key: Z,         mods: Alt|Shift, chars: "\x1bZ"}
+  - { key: Key1,      mods: Alt,       chars: "\x1b1"}
+  - { key: Key2,      mods: Alt,       chars: "\x1b2"}
+  - { key: Key3,      mods: Alt,       chars: "\x1b3"}
+  - { key: Key4,      mods: Alt,       chars: "\x1b4"}
+  - { key: Key5,      mods: Alt,       chars: "\x1b5"}
+  - { key: Key6,      mods: Alt,       chars: "\x1b6"}
+  - { key: Key7,      mods: Alt,       chars: "\x1b7"}
+  - { key: Key8,      mods: Alt,       chars: "\x1b8"}
+  - { key: Key9,      mods: Alt,       chars: "\x1b9"}
+  - { key: Key0,      mods: Alt,       chars: "\x1b0"}
+  - { key: Space,     mods: Control,   chars: "\x00" }
+  - { key: Grave,     mods: Alt,       chars: "\x1b`"}
+  - { key: Grave,     mods: Alt|Shift, chars: "\x1b~"}
+  - { key: Period,    mods: Alt,       chars: "\x1b."}
+  - { key: Key8,      mods: Alt|Shift, chars: "\x1b*"}
+  - { key: Key3,      mods: Alt|Shift, chars: "\x1b#"}
+  - { key: Period,    mods: Alt|Shift, chars: "\x1b>"}
+  - { key: Comma,     mods: Alt|Shift, chars: "\x1b<"}
+  - { key: Minus,     mods: Alt|Shift, chars: "\x1b_"}
+  - { key: Key5,      mods: Alt|Shift, chars: "\x1b%"}
+  - { key: Key6,      mods: Alt|Shift, chars: "\x1b^"}
+  - { key: Backslash, mods: Alt,       chars: "\x1b\\"}
+  - { key: Backslash, mods: Alt|Shift, chars: "\x1b|"}
