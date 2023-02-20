@@ -24,6 +24,8 @@ export CLICOLOR=true
 export HISTFILE=~/.zsh_history
 export SAVEHIST=1000000
 
+export PATH="$HOME/.dotfiles/bin:$PATH"
+
 alias py=python3
 alias cd=z
 alias exa="exa --tree --sort=modified --reverse --icons --long --git --no-permissions --no-filesize --no-user --no-time --git-ignore"
@@ -35,7 +37,7 @@ alias todo='notes todo'
 mkcd () { mkdir $1 && cd $1 }
 cls () { cd $1 && ls }
 alias h='hx .'
-alias phoenix='vim ~/gt/phoenix/vip-scc.wiki/Ved-Thiru.md'
+alias phoenix='hx ~/gt/phoenix/vip-scc.wiki/Ved-Thiru.md'
 
 setopt correct # corrections
 setopt no_case_glob

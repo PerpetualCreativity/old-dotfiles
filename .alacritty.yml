@@ -6,7 +6,7 @@ shell:
   args:
     - -l
     - -c
-    - "tmux attach || tmux"
+    - "source ~/.zshrc; tmux attach 2> /dev/null || tmux"
 
 alt_send_esc: true
 
@@ -218,20 +218,20 @@ key_bindings:
   # windows
   - { key: T, mods: Command,       chars: "\x02\x63" }    # new window
   - { key: T, mods: Command|Shift, chars: "\x02\x40" }    # new window at pwd
-  - { key: R, mods: Command,       chars: "\x02\x2c" }    # rename window
+  - { key: R, mods: Command|Shift, chars: "\x02\x2c" }    # rename window
   - { key: W, mods: Command|Shift, chars: "\x02\x26" }    # close window
   - { key: N, mods: Command,       chars: "\x02\x6e" }    # next window
   - { key: P, mods: Command,       chars: "\x02\x70" }    # previous window
   # switch to window
-  - { key: Key1, mods: Command, chars: "\x02\x31" }
-  - { key: Key2, mods: Command, chars: "\x02\x32" }
-  - { key: Key3, mods: Command, chars: "\x02\x33" }
-  - { key: Key4, mods: Command, chars: "\x02\x34" }
-  - { key: Key5, mods: Command, chars: "\x02\x35" }
-  - { key: Key6, mods: Command, chars: "\x02\x36" }
-  - { key: Key7, mods: Command, chars: "\x02\x37" }
-  - { key: Key8, mods: Command, chars: "\x02\x38" }
-  - { key: Key9, mods: Command, chars: "\x02\x39" }
+  - { key: Key1, mods: Command, chars: "\x02\x30" }
+  - { key: Key2, mods: Command, chars: "\x02\x31" }
+  - { key: Key3, mods: Command, chars: "\x02\x32" }
+  - { key: Key4, mods: Command, chars: "\x02\x33" }
+  - { key: Key5, mods: Command, chars: "\x02\x34" }
+  - { key: Key6, mods: Command, chars: "\x02\x35" }
+  - { key: Key7, mods: Command, chars: "\x02\x36" }
+  - { key: Key8, mods: Command, chars: "\x02\x37" }
+  - { key: Key9, mods: Command, chars: "\x02\x38" }
   # sessions
   - { key: O, mods: Command,       chars: "\x02\x77" }    # display sessions
   - { key: N, mods: Command|Shift, chars: "\x02\x29" }    # next session
@@ -305,6 +305,8 @@ key_bindings:
   - { key: Key8,      mods: Alt,       chars: "\x1b8"}
   - { key: Key9,      mods: Alt,       chars: "\x1b9"}
   - { key: Key0,      mods: Alt,       chars: "\x1b0"}
+  - { key: Key9,      mods: Alt|Shift, chars: "\x1b("}
+  - { key: Key0,      mods: Alt|Shift, chars: "\x1b)"}
   - { key: Space,     mods: Control,   chars: "\x00" }
   - { key: Grave,     mods: Alt,       chars: "\x1b`"}
   - { key: Grave,     mods: Alt|Shift, chars: "\x1b~"}

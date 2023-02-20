@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+set -e
+
+name=$(echo "$1" | sed 's/\.md//')
+
+pf () {
+	echo "pandoc --filter ~/projects/stable/pandoc-asciimath2tex/filter.js -o $1.pdf $1.md"
+}
+
+exec -- $(pf $name)
+
+zathura $name.pdf &
+
+echo "$name.md" | entr -np $(pf $name) &

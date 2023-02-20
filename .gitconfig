@@ -9,7 +9,7 @@
 [diff]
 	tool = vimdiff
 [core]
-	editor = vim
+	editor = hx
 	excludesFile = ~/.gitignore_global
 [color]
 	ui = true
