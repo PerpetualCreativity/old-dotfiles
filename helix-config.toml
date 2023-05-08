@@ -15,6 +15,5 @@ select = "block"
 
 [editor.statusline]
 left = ["mode", "spacer", "spinner", "diagnostics"]
-center = ["file-name"]
-right = ["selections"]
-
+center = ["version-control", "file-name", "file-modification-indicator"]
+right = ["selections", "spacer", "position-percentage"]

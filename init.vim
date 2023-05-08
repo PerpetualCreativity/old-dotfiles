@@ -183,7 +183,7 @@ autocmd BufNewFile,BufFilePre,BufRead *.md set shiftwidth=4 tabstop=4
 " call lexima#add_rule({'char': '<Enter>', 'at': '\$\$\%#', 'input_after': '$$', 'filetype': 'pandoc'})
 
 function! MathReRender(out)
-  call system('pandoc --filter ~/projects/stable/pandoc-asciimath2tex/filter.js -o ' . a:out . ' &', join(getline(1, '$'), "\n"))
+  call system('pandoc --filter ~/projects/stable/pandoc-asciimath2tex/filter.js -o --pdf-engine=lualatex' . a:out . ' &', join(getline(1, '$'), "\n"))
 endfunction
 function! MathRender()
   let l:bufn = bufname('%')

@@ -26,6 +26,8 @@ export SAVEHIST=1000000
 
 export PATH="$HOME/.dotfiles/bin:$PATH"
 
+alias -g ...='../..'
+alias -g ....='../../..'
 alias py=python3
 alias cd=z
 alias exa="exa --tree --sort=modified --reverse --icons --long --git --no-permissions --no-filesize --no-user --no-time --git-ignore"
@@ -36,8 +38,12 @@ notes () { hx ~/notes/$1.md }
 alias todo='notes todo'
 mkcd () { mkdir $1 && cd $1 }
 cls () { cd $1 && ls }
+pdf () { zathura $1 &! }
+alias -s pdf=pdf
 alias h='hx .'
+alias -s {md,rs,c,go,java,exs,ex,erl}=hx
 alias phoenix='hx ~/gt/phoenix/vip-scc.wiki/Ved-Thiru.md'
+alias ksh='kitty +kitten ssh'
 
 setopt correct # corrections
 setopt no_case_glob
@@ -127,3 +133,6 @@ elif [ -f /etc/debian_version ]; then
     sourceif /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
 
+source ~/work/fzf-tab/fzf-tab.plugin.zsh
+
+[ -f "/Users/vulcan/.ghcup/env" ] && source "/Users/vulcan/.ghcup/env" # ghcup-env
