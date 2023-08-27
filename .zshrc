@@ -8,6 +8,7 @@ export PATH="/usr/local/opt/llvm/bin:$PATH"
 export PATH="/Users/ved/.local/bin:/usr/local/opt/libpq/bin:$PATH"
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$PATH"
 
 unsetopt BEEP # stop beeping at me :)
 
@@ -41,7 +42,7 @@ cls () { cd $1 && ls }
 pdf () { zathura $1 &! }
 alias -s pdf=pdf
 alias h='hx .'
-alias -s {md,rs,c,go,java,exs,ex,erl}=hx
+alias -s {md,rs,c,go,java,ml,exs,ex,erl}=hx
 alias phoenix='hx ~/gt/phoenix/vip-scc.wiki/Ved-Thiru.md'
 alias ksh='kitty +kitten ssh'
 
@@ -132,7 +133,5 @@ elif [ -f /etc/debian_version ]; then
     sourceif /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     sourceif /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
-
-source ~/work/fzf-tab/fzf-tab.plugin.zsh
 
 [ -f "/Users/vulcan/.ghcup/env" ] && source "/Users/vulcan/.ghcup/env" # ghcup-env

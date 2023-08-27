@@ -1,4 +1,4 @@
-theme = "catppuccin_mocha"
+theme = "rose_pine_dawn"
 
 [editor]
 line-number = "relative"
@@ -12,6 +12,10 @@ soft-wrap.enable = true
 insert = "bar"
 normal = "underline"
 select = "block"
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
 
 [editor.statusline]
 left = ["mode", "spacer", "spinner", "diagnostics"]
