@@ -7,15 +7,26 @@
 	name = PerpetualCreativity
 	email = 47309279+PerpetualCreativity@users.noreply.github.com
 [diff]
-	tool = vimdiff
+	external = difft
 [core]
 	editor = hx
 	excludesFile = ~/.gitignore_global
 [color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
 	ui = true
-	pager = no
+	pager = true
 
 [credential]
 	helper = osxkeychain
 [init]
 	defaultBranch = main
+[rerere]
+	enabled = true
+[help]
+	autocorrect = 5
+
+[merge]
+	conflictstyle = diff3

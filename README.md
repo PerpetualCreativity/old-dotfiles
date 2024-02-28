@@ -1,5 +1,5 @@
 # PerpetualCreativity's dotfiles
-These are my dotfiles. For macOS and Debian-based Linux distros only.
+These are my dotfiles. The bootstrap script is meant for macOS. Some config files are for macOS-only software.
 
 ## Install
 

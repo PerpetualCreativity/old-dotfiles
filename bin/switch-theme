@@ -17,4 +17,6 @@ else
 fi
 
 sed -i '' "s/rose_pine_$old/rose_pine_$new/" ~/.config/helix/config.toml
+sed -i '' "s/rose-pine-$old/rose-pine-$new/" ~/.config/alacritty/alacritty.yml
+sed -i '' "s/$old/$new/" ~/.tmux.conf
 for pid in `pgrep hx`; do kill -USR1 $pid; done

@@ -1,5 +1,6 @@
 [ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)" 
 [[ ! -r /Users/vulcan/.opam/opam-init/init.zsh ]] || source /Users/vulcan/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+export PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/Users/vulcan/scratch/zig/build/stage3/bin:$PATH"
 export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
@@ -9,6 +10,9 @@ export PATH="/Users/ved/.local/bin:/usr/local/opt/libpq/bin:$PATH"
 export PATH="/usr/local/opt/openjdk/bin:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
+export PATH="$HOME/.deno/bin:$PATH"
+export PATH="$HOME/.mix/escripts:$PATH"
+export JAVA_HOME=$(/usr/libexec/java_home -v 19.0.1)
 
 unsetopt BEEP # stop beeping at me :)
 
@@ -20,10 +24,12 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 bindkey -v
 export PATH=$PATH:$HOME/go/bin
 export PATH=$PATH:$HOME/.cargo/bin
-export EDITOR=nvim
+export EDITOR=hx
 export CLICOLOR=true
 export HISTFILE=~/.zsh_history
+export HISTSIZE=1000000
 export SAVEHIST=1000000
+setopt extended_history
 
 export PATH="$HOME/.dotfiles/bin:$PATH"
 
@@ -42,9 +48,9 @@ cls () { cd $1 && ls }
 pdf () { zathura $1 &! }
 alias -s pdf=pdf
 alias h='hx .'
-alias -s {md,rs,c,go,java,ml,exs,ex,erl}=hx
 alias phoenix='hx ~/gt/phoenix/vip-scc.wiki/Ved-Thiru.md'
 alias ksh='kitty +kitten ssh'
+alias skim='open -a /Applications/Skim.app '
 
 setopt correct # corrections
 setopt no_case_glob
@@ -96,6 +102,12 @@ getgit () {
     fi
 }
 add-zsh-hook precmd getgit
+check_bell () {
+    if [[ ${TTYIDLE} -gt 15 ]]; then
+        tput bel
+    fi
+}
+add-zsh-hook precmd check_bell
 # not using %v, and using $psvar and setopt promptsubst instead,
 # allows us to use escape sequences in psvar
 PROMPT='%F{magenta}%n%f %F{cyan}%~%f $psvar[1]%(0?.%F{green}.%F{red})%B>%b%f '
