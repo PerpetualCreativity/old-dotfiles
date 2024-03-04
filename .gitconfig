@@ -7,7 +7,7 @@
 	name = PerpetualCreativity
 	email = 47309279+PerpetualCreativity@users.noreply.github.com
 [diff]
-	external = difft
+	external = difft --parse-error-limit 20
 [core]
 	editor = hx
 	excludesFile = ~/.gitignore_global
