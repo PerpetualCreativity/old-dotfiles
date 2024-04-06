@@ -1,4 +1,4 @@
-theme = "rose_pine_dawn"
+theme = 'rose_pine_moon'
 
 [editor]
 line-number = "relative"
@@ -13,11 +13,10 @@ insert = "bar"
 normal = "underline"
 select = "block"
 
-[editor.lsp]
-display-messages = true
-display-inlay-hints = true
-
 [editor.statusline]
 left = ["mode", "spacer", "spinner", "diagnostics"]
 center = ["version-control", "file-name", "file-modification-indicator"]
 right = ["selections", "spacer", "position-percentage"]
+
+[editor.lsp]
+display-messages = true

@@ -8,8 +8,8 @@ shell:
   program: /bin/zsh
   args:
     - -l
-    - -c
-    - "source ~/.zshrc; tmux attach 2> /dev/null || tmux"
+  #   - -c
+  #   - "source ~/.zshrc; tmux attach 2> /dev/null || tmux"
 
 window:
   decorations: none
@@ -59,7 +59,7 @@ key_bindings:
   # windows
   - { key: T, mods: Command,       chars: "\x02\x63" }    # new window
   - { key: T, mods: Command|Shift, chars: "\x02\x40" }    # new window at pwd
-  - { key: R, mods: Command|Shift, chars: "\x02\x2c" }    # rename window
+  - { key: R, mods: Command,       chars: "\x02\x2c" }    # rename window
   - { key: W, mods: Command|Shift, chars: "\x02\x26" }    # close window
   - { key: N, mods: Command,       chars: "\x02\x6e" }    # next window
   - { key: P, mods: Command,       chars: "\x02\x70" }    # previous window
@@ -78,7 +78,11 @@ key_bindings:
   - { key: N, mods: Command|Shift, chars: "\x02\x29" }    # next session
   - { key: P, mods: Command|Shift, chars: "\x02\x28" }    # previous session
   - { key: G, mods: Command,       chars: "\x02\x23" }    # set wd of session to pwd
+  - { key: R, mods: Command|Shift, chars: "\x02\x24" }    # rename session
   # popup window
   - { key: E, mods: Command, chars: "\x02\x6a" }          # toggle popup window
   # tmux command line
   - { key: Semicolon, mods: Command, chars: "\x02\x3a" }  # open tmux command line
+  # switch themes
+  - { key: U, mods: Command|Shift, chars: "\x02\x1b\x4f\x50" }
+  - { key: I, mods: Command|Shift, chars: "\x02\x1b\x4f\x51" }

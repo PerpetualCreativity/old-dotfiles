@@ -1,18 +1,19 @@
 [ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)" 
+[ -f "/usr/local/bin/brew" ] && eval "$(/usr/local/bin/brew shellenv)"
 [[ ! -r /Users/vulcan/.opam/opam-init/init.zsh ]] || source /Users/vulcan/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-export PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="/Users/vulcan/scratch/zig/build/stage3/bin:$PATH"
-export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
-export PATH="/usr/local/opt/llvm/bin:$PATH"
-export PATH="/Users/ved/.local/bin:/usr/local/opt/libpq/bin:$PATH"
-export PATH="/usr/local/opt/openjdk/bin:$PATH"
+export PATH="$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="$HOMEBREW_PREFIX/opt/openjdk@11/bin:$PATH"
+export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"
+export PATH="$HOMEBREW_PREFIX/opt/openjdk/bin:$PATH"
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.mix/escripts:$PATH"
+export PATH="$HOME/.zig:$PATH"
 export JAVA_HOME=$(/usr/libexec/java_home -v 19.0.1)
+
+# install zsh completions from homebrew-installed utilities
+fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
 
 unsetopt BEEP # stop beeping at me :)
 
@@ -50,7 +51,6 @@ alias -s pdf=pdf
 alias h='hx .'
 alias phoenix='hx ~/gt/phoenix/vip-scc.wiki/Ved-Thiru.md'
 alias ksh='kitty +kitten ssh'
-alias skim='open -a /Applications/Skim.app '
 
 setopt correct # corrections
 setopt no_case_glob
@@ -137,8 +137,8 @@ compinit
 sourceif () { [ -f $1 ] && source $1 }
 if [ "$(uname -s)" = "Darwin" ]; then
     sourceif ~/.fzf.zsh
-    sourceif $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    sourceif $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    sourceif "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    sourceif "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 elif [ -f /etc/debian_version ]; then
     sourceif /usr/share/doc/fzf/examples/key-bindings.zsh
     sourceif /usr/share/doc/fzf/examples/completion.zsh
