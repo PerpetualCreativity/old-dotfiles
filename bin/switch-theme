@@ -8,9 +8,11 @@ end
 if test $argv[1] = light
     set -f old moon
     set -f new dawn
+    set -f cursor BreezeX-RosePineDawn-Linux
 else if $argv[1] = dark
     set -f old dawn
     set -f new moon
+    set -f cursor BreezeX-RosePine-Linux
 else
     print 'must be either light or dark' >&2
     exit 1
@@ -26,4 +28,8 @@ replace "s/$old/$new/" ~/.tmux.conf
 
 for pid in (pgrep hx)
     kill -USR1 $pid
+end
+
+if test -f /etc/fedora-release
+    gsettings set org.gnome.desktop.interface cursor-theme $cursor
 end
