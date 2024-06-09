@@ -1,15 +1,25 @@
-[ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)" 
-[ -f "/usr/local/bin/brew" ] && eval "$(/usr/local/bin/brew shellenv)"
-[[ ! -r /Users/vulcan/.opam/opam-init/init.zsh ]] || source /Users/vulcan/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-export PATH="$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="$HOMEBREW_PREFIX/opt/openjdk@11/bin:$PATH"
-export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"
-export PATH="$HOMEBREW_PREFIX/opt/openjdk/bin:$PATH"
+if [ -f "/opt/homebrew/bin/brew" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)" 
+    export PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:$PATH"
+    export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
+    export PATH="/opt/homebrew/opt/openjdk@11/bin:$PATH"
+    export PATH="/usr/local/sbin:$PATH"
+    export PATH="/usr/local/opt/llvm/bin:$PATH"
+    export PATH="/usr/local/opt/ruby/bin:$PATH"
+    export PATH="/Users/ved/.local/bin:/usr/local/opt/libpq/bin:$PATH"
+    export PATH="/usr/local/opt/openjdk/bin:$PATH"
+    export JAVA_HOME=$(/usr/libexec/java_home -v 19.0.1)
+fi
+[[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh"  > /dev/null 2> /dev/null
 export PATH="$HOME/.ghcup/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 export PATH="$HOME/.mix/escripts:$PATH"
 export PATH="$HOME/.zig:$PATH"
+export PATH=$PATH:$HOME/go/bin
+export PATH=$PATH:$HOME/.cargo/bin
+export PATH="$HOME/.dotfiles/bin:$PATH"
+
 export JAVA_HOME=$(/usr/libexec/java_home -v 19.0.1)
 
 # install zsh completions from homebrew-installed utilities
@@ -21,18 +31,13 @@ eval "$(zoxide init zsh)" # zoxide
 
 export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
 
-export PATH="/usr/local/opt/ruby/bin:$PATH"
 bindkey -v
-export PATH=$PATH:$HOME/go/bin
-export PATH=$PATH:$HOME/.cargo/bin
 export EDITOR=hx
 export CLICOLOR=true
 export HISTFILE=~/.zsh_history
 export HISTSIZE=1000000
 export SAVEHIST=1000000
 setopt extended_history
-
-export PATH="$HOME/.dotfiles/bin:$PATH"
 
 alias -g ...='../..'
 alias -g ....='../../..'
@@ -144,6 +149,9 @@ elif [ -f /etc/debian_version ]; then
     sourceif /usr/share/doc/fzf/examples/completion.zsh
     sourceif /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     sourceif /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+elif [ -f /etc/fedora-release ]; then
+    sourceif /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    sourceif /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 [ -f "/Users/vulcan/.ghcup/env" ] && source "/Users/vulcan/.ghcup/env" # ghcup-env
