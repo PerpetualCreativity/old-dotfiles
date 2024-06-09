@@ -1,25 +1,29 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env fish
 
-if [[ $# -ne 1 ]]; then
-   print "one argument please" >&2
-   exit 1
-fi
+if test (count $argv) -ne 1
+    echo 'one argument please' >&2
+    exit 1
+end
 
-if [ $1 = 'light' ]; then
-  old='moon'
-  new='dawn'
-elif [ $1 = 'dark' ]; then
-  old='dawn'
-  new='moon'
+if test $argv[1] = light
+    set -f old moon
+    set -f new dawn
+else if $argv[1] = dark
+    set -f old dawn
+    set -f new moon
 else
-  print "must be either light or dark" >&2
-  exit 1
-fi
+    print 'must be either light or dark' >&2
+    exit 1
+end
 
-# note to self: sed -i breaks hardlinks!
-replace () { cp =(sed $1 $2) $2 }
+function replace
+    cp (sed $argv[1] $argv[2] | psub -f) $argv[2]
+end
 
 replace "s/rose_pine_$old/rose_pine_$new/" ~/.config/helix/config.toml
-replace "s/rose-pine-$old/rose-pine-$new/" ~/.config/alacritty/alacritty.yml
+replace "s/rose_pine_$old/rose_pine_$new/" ~/.config/alacritty/alacritty.yml
 replace "s/$old/$new/" ~/.tmux.conf
-for pid in `pgrep hx`; do kill -USR1 $pid; done
+
+for pid in (pgrep hx)
+    kill -USR1 $pid
+end

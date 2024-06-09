@@ -1,8 +1,6 @@
-#!/bin/zsh
+#!/usr/bin/env fish
 
-set -e
-
-name=$(echo "$1" | sed 's/\.md//')
+set name (echo "$argv[1]" | sed 's/\.md//')
 
 pan="pandoc --filter ~/projects/stable/pandoc-asciimath2tex/filter.js -o $name.pdf $name.md"
 
